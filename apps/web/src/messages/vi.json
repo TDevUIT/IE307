@@ -17,5 +17,32 @@
     "Integrations": "Tích hợp",
     "UserFeedback": "Phản hồi người dùng",
     "SystemMonitoring": "Giám sát hệ thống"
+  },
+  "Hero": {
+    "title": "Học tiếng Nhật với Kapi",
+    "description": "Nắm vững tiếng Nhật thông qua các bài học thú vị, thẻ flash tương tác và đánh giá cá nhân. Học từ cơ bản đến nâng cao với thiết kế trực quan.",
+    "button": "Bắt đầu"
+  },
+  "Navbar": {
+    "download": "Tải xuống"
+  },
+  "Testimonials": {
+    "header": "Người dùng nói gì về chúng tôi",
+    "subheader": "Tham gia cùng hơn 2.157 người dùng hài lòng yêu thích Kapi",
+    "seeAllReviews": "Xem tất cả 2.157 đánh giá"
+  },
+  "Notifications": {
+    "title": "Nhận thông báo về các cập nhật sản phẩm",
+    "description": "Nhập email của bạn bên dưới để cập nhật các tính năng và thông báo mới nhất của chúng tôi.",
+    "placeholder": "Nhập địa chỉ email của bạn",
+    "subscribe": "Đăng ký",
+    "subscribing": "Đang đăng ký...",
+    "thankYou": "Cảm ơn bạn đã đăng ký!",
+    "error": "Đã xảy ra lỗi. Vui lòng thử lại."
+  },
+  "Footer": {
+    "appName": "Kapi",
+    "description": "Học tiếng Nhật qua các bài học hấp dẫn và tương tác. Bắt đầu hành trình của bạn với chúng tôi ngay hôm nay!",
+    "copyright": "© 2024 Kapi. Bảo lưu mọi quyền."
   }
 }

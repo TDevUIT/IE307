@@ -56,38 +56,41 @@ const HeaderBar = () => {
     </>
   );
 };
-
 const Screen = () => {
   return (
     <div className="w-full h-full relative">
       <div className="relative z-0 grid h-full w-full place-content-center overflow-hidden rounded-[20px] bg-white">
-        <div className="mt-4 flex flex-row items-start justify-between px-3">
-          <h2 className="text-xl font-extrabold text-black">Kapi!</h2>
+        <div className="mt-4 flex flex-col sm:flex-row items-start justify-between px-3">
+          <h2 className="text-2xl font-extrabold text-black">Kapi!</h2>
           <div className="flex flex-row gap-x-1 mt-1">
-            <Image src={vietnamFlag} width={18}  height={18} alt='vn' />
-            <Image src={japaneseFlag} width={18}  height={18} alt='jp'/>
+            <Image src={vietnamFlag} width={18} height={18} alt='vn' className="h-5 w-5" />
+            <Image src={japaneseFlag} width={18} height={18} alt='jp' className="h-5 w-5" />
           </div>
         </div>
-        <Image width={340} height={340} src={logo} alt="logo"
-          className="mb-10 h-[340px] w-[340px] rounded-full object-cover sm:h-64 sm:w-64"
+        <Image
+          width={340}
+          height={340}
+          src={logo}
+          alt="logo"
+          className="mb-10 h-[240px] w-[240px] rounded-full object-cover sm:h-64 sm:w-64"
         />
-        <button className="absolute bottom-4 left-4 right-4 z-10 rounded-lg border-[1px] bg-white py-2 text-sm font-medium text-black backdrop-blur">
+         <button className="absolute bottom-4 left-4 right-4 z-10 rounded-lg border-[1px] bg-white py-2 text-sm font-medium text-black backdrop-blur">
           Get Started
         </button>
         <div className="absolute -bottom-72 left-[50%] h-96 w-96 -translate-x-[50%] rounded-full bg-orange-500" />
       </div>
-      <div className="bg-white bg-opacity-20 w-[160px] h-[80px] rounded-lg absolute top-10 translate-x-[70%] z-30 shadow-lg text-center flex items-center justify-center backdrop-blur-md border border-white/30">
+      <div className="bg-white bg-opacity-20 w-[140px] h-[70px] rounded-lg absolute top-10 md:translate-x-[70%] translate-x-[80%] z-30 shadow-lg text-center flex items-center justify-center backdrop-blur-md border border-white/30 sm:w-[160px] sm:h-[80px]">
         レビュー
       </div>
-      <div className="bg-white bg-opacity-20 w-[160px] h-[80px] rounded-lg absolute bottom-28 -translate-x-[70%] z-30 shadow-lg text-center flex items-center justify-center backdrop-blur-md border border-white/30">
+      <div className="bg-white bg-opacity-20 w-[140px] h-[70px] rounded-lg absolute bottom-28 -translate-x-[70%] z-30 shadow-lg text-center flex items-center justify-center backdrop-blur-md border border-white/30 sm:w-[160px] sm:h-[80px]">
         レビュー
       </div>
-      <div className="bg-white bg-opacity-20 w-[160px] h-[80px] rounded-lg absolute bottom-10 translate-x-[70%] z-30 shadow-lg text-center flex items-center justify-center backdrop-blur-md border border-white/30">
+      <div className="bg-white bg-opacity-20 w-[140px] h-[70px] rounded-lg absolute bottom-10 md:translate-x-[70%] translate-x-[80%] z-30 shadow-lg text-center flex items-center justify-center backdrop-blur-md border border-white/30 sm:w-[160px] sm:h-[80px]">
         レビュー
       </div>
     </div>
-    
   );
 };
+
 
 export default PhoneScreen;

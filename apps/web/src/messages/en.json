@@ -17,5 +17,32 @@
     "Integrations": "Integrations",
     "UserFeedback": "User Feedback",
     "SystemMonitoring": "System Monitoring"
+  },
+  "Hero": {
+    "title": "Learn Japanese with Kapi",
+    "description": "Master Japanese through fun lessons, interactive flashcards, and personalized reviews. Start from basics to proficiency with an intuitive design.",
+    "button": "Get Started"
+  },
+  "Navbar": {
+    "download": "Download"
+  },
+  "Testimonials": {
+    "header": "What Our Users Say",
+    "subheader": "Join over 2,157 satisfied users who love Kapi",
+    "seeAllReviews": "See all 2,157 reviews"
+  },
+  "Notifications": {
+    "title": "Get Notified About Product Updates",
+    "description": "Enter your email below to stay updated with our latest features and announcements.",
+    "placeholder": "Enter your email address",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing...",
+    "thankYou": "Thank you for subscribing!",
+    "error": "There was an error. Please try again."
+  },
+  "Footer": {
+    "appName": "Kapi",
+    "description": "Learn Japanese with engaging and interactive lessons. Start your journey with us today!",
+    "copyright": "© 2024 Kapi. All rights reserved."
   }
 }
