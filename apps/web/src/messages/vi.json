@@ -4,120 +4,18 @@
     "content": "Đây là nội dung trang chủ"
   },
   "Sidebar": {
-    "dashboardOverview": "Tổng quan bảng điều khiển",
-    "userManagement": "Quản lý người dùng",
-    "courseManagement": "Quản lý khóa học",
-    "lessonManagement": "Quản lý bài học",
-    "vocabularyManagement": "Quản lý từ vựng",
-    "flashcardsManagement": "Quản lý flashcards",
-    "grammarManagement": "Quản lý ngữ pháp",
-    "miniTestManagement": "Quản lý kiểm tra nhỏ",
-    "notificationManagement": "Quản lý thông báo",
-    "settings": "Cài đặt"
-  },
-  "DashboardOverview": {
-    "title": "Tổng quan bảng điều khiển",
-    "userStatistics": "Thống kê người dùng",
-    "courseStatistics": "Thống kê khóa học",
-    "learningProgress": "Tiến độ học tập",
-    "dataAnalytics": "Phân tích dữ liệu",
-    "userGrowth": "Tăng trưởng người dùng",
-    "courseCompletion": "Hoàn thành khóa học",
-    "activeUsers": "Người dùng hoạt động"
-  },
-  "UserManagement": {
-    "title": "Quản lý người dùng",
-    "viewUsers": "Xem danh sách người dùng",
-    "addUser": "Thêm người dùng",
-    "editUser": "Chỉnh sửa người dùng",
-    "deleteUser": "Xóa người dùng",
-    "userActivityLog": "Nhật ký hoạt động người dùng",
-    "id": "ID",
-    "email": "Email",
-    "subscriptionStatus": "Trạng thái đăng ký",
-    "lessonsCompleted": "Bài học đã hoàn thành",
-    "recentActivity": "Hoạt động gần đây",
-    "loginTime": "Thời gian đăng nhập",
-    "lastLesson": "Bài học gần đây"
-  },
-  "CourseManagement": {
-    "title": "Quản lý khóa học",
-    "viewCourses": "Xem danh sách khóa học",
-    "addCourse": "Thêm khóa học",
-    "editCourse": "Chỉnh sửa khóa học",
-    "deleteCourse": "Xóa khóa học",
-    "courseProgress": "Tiến độ khóa học",
-    "courseId": "ID Khóa học",
-    "courseName": "Tên khóa học",
-    "courseCreator": "Người tạo",
-    "lessonsCount": "Số lượng bài học",
-    "completionPercentage": "Phần trăm hoàn thành"
-  },
-  "LessonManagement": {
-    "title": "Quản lý bài học",
-    "viewLessons": "Xem danh sách bài học",
-    "addLesson": "Thêm bài học",
-    "editLesson": "Chỉnh sửa bài học",
-    "deleteLesson": "Xóa bài học",
-    "lessonProgress": "Tiến độ bài học",
-    "lessonId": "ID Bài học",
-    "lessonTitle": "Tiêu đề bài học",
-    "relatedCourse": "Khóa học liên quan",
-    "createdDate": "Ngày tạo",
-    "lessonContent": "Nội dung bài học"
-  },
-  "VocabularyManagement": {
-    "title": "Quản lý từ vựng",
-    "viewVocabulary": "Xem danh sách từ vựng",
-    "addVocabulary": "Thêm từ vựng",
-    "editVocabulary": "Chỉnh sửa từ vựng",
-    "deleteVocabulary": "Xóa từ vựng",
-    "vocabularyStatus": "Trạng thái học tập",
-    "vocabularyId": "ID Từ vựng",
-    "vocabularyWord": "Từ tiếng Nhật",
-    "meaning": "Nghĩa tiếng Việt",
-    "kanji": "Kanji"
-  },
-  "FlashcardsManagement": {
-    "title": "Quản lý flashcards",
-    "viewFlashcards": "Xem danh sách flashcards",
-    "addFlashcard": "Thêm flashcard",
-    "editFlashcard": "Chỉnh sửa flashcard",
-    "deleteFlashcard": "Xóa flashcard"
-  },
-  "GrammarManagement": {
-    "title": "Quản lý ngữ pháp",
-    "viewGrammarRules": "Xem danh sách quy tắc ngữ pháp",
-    "addGrammarRule": "Thêm quy tắc ngữ pháp",
-    "editGrammarRule": "Chỉnh sửa quy tắc ngữ pháp",
-    "deleteGrammarRule": "Xóa quy tắc ngữ pháp"
-  },
-  "MiniTestManagement": {
-    "title": "Quản lý kiểm tra nhỏ",
-    "viewMiniTests": "Xem danh sách câu hỏi kiểm tra",
-    "addMiniTest": "Thêm câu hỏi kiểm tra",
-    "editMiniTest": "Chỉnh sửa câu hỏi kiểm tra",
-    "deleteMiniTest": "Xóa câu hỏi kiểm tra"
-  },
-  "NotificationManagement": {
-    "title": "Quản lý thông báo",
-    "viewNotifications": "Xem danh sách thông báo",
-    "sendNotification": "Gửi thông báo",
-    "editNotification": "Chỉnh sửa thông báo",
-    "deleteNotification": "Xóa thông báo",
-    "notificationLogs": "Lịch sử thông báo",
-    "notificationId": "ID Thông báo",
-    "notificationStatus": "Trạng thái",
-    "recipient": "Người nhận",
-    "notificationType": "Loại thông báo",
-    "notificationContent": "Nội dung thông báo"
-  },
-  "Settings": {
-    "title": "Cài đặt",
-    "systemSettings": "Cài đặt hệ thống",
-    "languageSettings": "Cài đặt ngôn ngữ",
-    "timezoneSettings": "Cài đặt múi giờ",
-    "emailSettings": "Cài đặt email",
-    "notificationMethods": "Phương thức thông báo"
+    "Dashboard": "Bảng điều khiển",
+    "Users": "Người dùng",
+    "Courses": "Khóa học",
+    "Lessons": "Bài học",
+    "Vocabulary": "Từ vựng",
+    "Flashcards": "Thẻ ghi nhớ",
+    "Notifications": "Thông báo",
+    "HealthyFactory": "Nhà máy sức khỏe",
+    "Reports": "Báo cáo",
+    "Settings": "Cài đặt",
+    "Integrations": "Tích hợp",
+    "UserFeedback": "Phản hồi người dùng",
+    "SystemMonitoring": "Giám sát hệ thống"
   }
 }

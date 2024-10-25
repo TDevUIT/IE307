@@ -4,120 +4,18 @@
     "content": "これはホームページのコンテンツです"
   },
   "Sidebar": {
-    "dashboardOverview": "ダッシュボード概要",
-    "userManagement": "ユーザー管理",
-    "courseManagement": "コース管理",
-    "lessonManagement": "レッスン管理",
-    "vocabularyManagement": "語彙管理",
-    "flashcardsManagement": "フラッシュカード管理",
-    "grammarManagement": "文法管理",
-    "miniTestManagement": "ミニテスト管理",
-    "notificationManagement": "通知管理",
-    "settings": "設定"
-  },
-  "DashboardOverview": {
-    "title": "ダッシュボード概要",
-    "userStatistics": "ユーザー統計",
-    "courseStatistics": "コース統計",
-    "learningProgress": "学習進捗",
-    "dataAnalytics": "データ分析",
-    "userGrowth": "ユーザーの増加",
-    "courseCompletion": "コースの完了",
-    "activeUsers": "アクティブユーザー"
-  },
-  "UserManagement": {
-    "title": "ユーザー管理",
-    "viewUsers": "ユーザー一覧を見る",
-    "addUser": "ユーザーを追加",
-    "editUser": "ユーザーを編集",
-    "deleteUser": "ユーザーを削除",
-    "userActivityLog": "ユーザー活動ログ",
-    "id": "ID",
-    "email": "メールアドレス",
-    "subscriptionStatus": "サブスクリプションのステータス",
-    "lessonsCompleted": "完了したレッスン数",
-    "recentActivity": "最近の活動",
-    "loginTime": "ログイン時間",
-    "lastLesson": "最近のレッスン"
-  },
-  "CourseManagement": {
-    "title": "コース管理",
-    "viewCourses": "コース一覧を見る",
-    "addCourse": "コースを追加",
-    "editCourse": "コースを編集",
-    "deleteCourse": "コースを削除",
-    "courseProgress": "コース進捗",
-    "courseId": "コースID",
-    "courseName": "コース名",
-    "courseCreator": "コース作成者",
-    "lessonsCount": "レッスン数",
-    "completionPercentage": "完了率"
-  },
-  "LessonManagement": {
-    "title": "レッスン管理",
-    "viewLessons": "レッスン一覧を見る",
-    "addLesson": "レッスンを追加",
-    "editLesson": "レッスンを編集",
-    "deleteLesson": "レッスンを削除",
-    "lessonProgress": "レッスン進捗",
-    "lessonId": "レッスンID",
-    "lessonTitle": "レッスンのタイトル",
-    "relatedCourse": "関連するコース",
-    "createdDate": "作成日",
-    "lessonContent": "レッスン内容"
-  },
-  "VocabularyManagement": {
-    "title": "語彙管理",
-    "viewVocabulary": "語彙一覧を見る",
-    "addVocabulary": "語彙を追加",
-    "editVocabulary": "語彙を編集",
-    "deleteVocabulary": "語彙を削除",
-    "vocabularyStatus": "学習のステータス",
-    "vocabularyId": "語彙ID",
-    "vocabularyWord": "日本語の単語",
-    "meaning": "意味（ベトナム語）",
-    "kanji": "漢字"
-  },
-  "FlashcardsManagement": {
-    "title": "フラッシュカード管理",
-    "viewFlashcards": "フラッシュカード一覧を見る",
-    "addFlashcard": "フラッシュカードを追加",
-    "editFlashcard": "フラッシュカードを編集",
-    "deleteFlashcard": "フラッシュカードを削除"
-  },
-  "GrammarManagement": {
-    "title": "文法管理",
-    "viewGrammarRules": "文法規則一覧を見る",
-    "addGrammarRule": "文法規則を追加",
-    "editGrammarRule": "文法規則を編集",
-    "deleteGrammarRule": "文法規則を削除"
-  },
-  "MiniTestManagement": {
-    "title": "ミニテスト管理",
-    "viewMiniTests": "ミニテスト一覧を見る",
-    "addMiniTest": "ミニテストを追加",
-    "editMiniTest": "ミニテストを編集",
-    "deleteMiniTest": "ミニテストを削除"
-  },
-  "NotificationManagement": {
-    "title": "通知管理",
-    "viewNotifications": "通知一覧を見る",
-    "sendNotification": "通知を送信",
-    "editNotification": "通知を編集",
-    "deleteNotification": "通知を削除",
-    "notificationLogs": "通知ログ",
-    "notificationId": "通知ID",
-    "notificationStatus": "ステータス",
-    "recipient": "受信者",
-    "notificationType": "通知の種類",
-    "notificationContent": "通知内容"
-  },
-  "Settings": {
-    "title": "設定",
-    "systemSettings": "システム設定",
-    "languageSettings": "言語設定",
-    "timezoneSettings": "タイムゾーン設定",
-    "emailSettings": "メール設定",
-    "notificationMethods": "通知方法"
+    "Dashboard": "ダッシュボード",
+    "Users": "ユーザー",
+    "Courses": "コース",
+    "Lessons": "レッスン",
+    "Vocabulary": "語彙",
+    "Flashcards": "フラッシュカード",
+    "Notifications": "通知",
+    "HealthyFactory": "ヘルシーファクトリー",
+    "Reports": "レポート",
+    "Settings": "設定",
+    "Integrations": "統合",
+    "UserFeedback": "ユーザーフィードバック",
+    "SystemMonitoring": "システム監視"
   }
 }

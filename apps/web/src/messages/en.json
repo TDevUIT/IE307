@@ -4,120 +4,18 @@
     "content": "This is the homepage content"
   },
   "Sidebar": {
-    "dashboardOverview": "Dashboard Overview",
-    "userManagement": "User Management",
-    "courseManagement": "Course Management",
-    "lessonManagement": "Lesson Management",
-    "vocabularyManagement": "Vocabulary Management",
-    "flashcardsManagement": "Flashcards Management",
-    "grammarManagement": "Grammar Management",
-    "miniTestManagement": "MiniTest Management",
-    "notificationManagement": "Notification Management",
-    "settings": "Settings"
-  },
-  "DashboardOverview": {
-    "title": "Dashboard Overview",
-    "userStatistics": "User Statistics",
-    "courseStatistics": "Course Statistics",
-    "learningProgress": "Learning Progress",
-    "dataAnalytics": "Data Analytics",
-    "userGrowth": "User Growth",
-    "courseCompletion": "Course Completion",
-    "activeUsers": "Active Users"
-  },
-  "UserManagement": {
-    "title": "User Management",
-    "viewUsers": "View Users",
-    "addUser": "Add User",
-    "editUser": "Edit User",
-    "deleteUser": "Delete User",
-    "userActivityLog": "User Activity Log",
-    "id": "ID",
-    "email": "Email",
-    "subscriptionStatus": "Subscription Status",
-    "lessonsCompleted": "Lessons Completed",
-    "recentActivity": "Recent Activity",
-    "loginTime": "Login Time",
-    "lastLesson": "Last Lesson"
-  },
-  "CourseManagement": {
-    "title": "Course Management",
-    "viewCourses": "View Courses",
-    "addCourse": "Add Course",
-    "editCourse": "Edit Course",
-    "deleteCourse": "Delete Course",
-    "courseProgress": "Course Progress",
-    "courseId": "Course ID",
-    "courseName": "Course Name",
-    "courseCreator": "Course Creator",
-    "lessonsCount": "Number of Lessons",
-    "completionPercentage": "Completion Percentage"
-  },
-  "LessonManagement": {
-    "title": "Lesson Management",
-    "viewLessons": "View Lessons",
-    "addLesson": "Add Lesson",
-    "editLesson": "Edit Lesson",
-    "deleteLesson": "Delete Lesson",
-    "lessonProgress": "Lesson Progress",
-    "lessonId": "Lesson ID",
-    "lessonTitle": "Lesson Title",
-    "relatedCourse": "Related Course",
-    "createdDate": "Created Date",
-    "lessonContent": "Lesson Content"
-  },
-  "VocabularyManagement": {
-    "title": "Vocabulary Management",
-    "viewVocabulary": "View Vocabulary",
-    "addVocabulary": "Add Vocabulary",
-    "editVocabulary": "Edit Vocabulary",
-    "deleteVocabulary": "Delete Vocabulary",
-    "vocabularyStatus": "Vocabulary Status",
-    "vocabularyId": "Vocabulary ID",
-    "vocabularyWord": "Japanese Word",
-    "meaning": "Meaning in Vietnamese",
-    "kanji": "Kanji"
-  },
-  "FlashcardsManagement": {
-    "title": "Flashcards Management",
-    "viewFlashcards": "View Flashcards",
-    "addFlashcard": "Add Flashcard",
-    "editFlashcard": "Edit Flashcard",
-    "deleteFlashcard": "Delete Flashcard"
-  },
-  "GrammarManagement": {
-    "title": "Grammar Management",
-    "viewGrammarRules": "View Grammar Rules",
-    "addGrammarRule": "Add Grammar Rule",
-    "editGrammarRule": "Edit Grammar Rule",
-    "deleteGrammarRule": "Delete Grammar Rule"
-  },
-  "MiniTestManagement": {
-    "title": "MiniTest Management",
-    "viewMiniTests": "View MiniTests",
-    "addMiniTest": "Add MiniTest",
-    "editMiniTest": "Edit MiniTest",
-    "deleteMiniTest": "Delete MiniTest"
-  },
-  "NotificationManagement": {
-    "title": "Notification Management",
-    "viewNotifications": "View Notifications",
-    "sendNotification": "Send Notification",
-    "editNotification": "Edit Notification",
-    "deleteNotification": "Delete Notification",
-    "notificationLogs": "Notification Logs",
-    "notificationId": "Notification ID",
-    "notificationStatus": "Status",
-    "recipient": "Recipient",
-    "notificationType": "Notification Type",
-    "notificationContent": "Content"
-  },
-  "Settings": {
-    "title": "Settings",
-    "systemSettings": "System Settings",
-    "languageSettings": "Language Settings",
-    "timezoneSettings": "Timezone Settings",
-    "emailSettings": "Email Settings",
-    "notificationMethods": "Notification Methods"
+    "Dashboard": "Dashboard",
+    "Users": "Users",
+    "Courses": "Courses",
+    "Lessons": "Lessons",
+    "Vocabulary": "Vocabulary",
+    "Flashcards": "Flashcards",
+    "Notifications": "Notifications",
+    "HealthyFactory": "HealthyFactory",
+    "Reports": "Reports",
+    "Settings": "Settings",
+    "Integrations": "Integrations",
+    "UserFeedback": "User Feedback",
+    "SystemMonitoring": "System Monitoring"
   }
 }

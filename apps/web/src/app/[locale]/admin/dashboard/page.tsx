@@ -4,7 +4,7 @@ import React from 'react'
 const AdminPage = () => {
     const t = useHandleTranslations("Homepage");
     return (
-        <div className='h-screen flex justify-center items-center'>
+        <div className=''>
             <p>AdminPage</p>
             <p>{t.title}</p>
         </div>
