@@ -1,4 +1,5 @@
-import Sidebar from '@/components/Sidebar'
+import { SidebarProvider } from '@/context/SidebarContext'
+import Provider from '@/provider/Provider'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 
@@ -12,12 +13,12 @@ export default async function RootLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <div className='flex'>
-        <Sidebar />
-        <div className='p-2'>
+      <SidebarProvider>
+        <Provider>
           {children}
-        </div>
-      </div>
-    </NextIntlClientProvider>
+        </Provider>  
+      </SidebarProvider>
+      </NextIntlClientProvider>
+    
   )
 }
