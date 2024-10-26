@@ -14,7 +14,10 @@ async function bootstrap() {
     AppModule,
     new ExpressAdapter(),
     {
-      cors: true,
+      cors: {
+        origin: ['http://localhost:3000', '*'],
+        credentials: true,
+      },
     },
   );
 
