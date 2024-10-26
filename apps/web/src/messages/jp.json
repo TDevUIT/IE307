@@ -17,5 +17,32 @@
     "Integrations": "統合",
     "UserFeedback": "ユーザーフィードバック",
     "SystemMonitoring": "システム監視"
+  },
+  "Hero": {
+    "title": "Kapiで日本語を学ぼう",
+    "description": "楽しいレッスン、インタラクティブなフラッシュカード、個別のレビューを通じて日本語をマスターしましょう。直感的なデザインで基本から上級まで学べます。",
+    "button": "始める"
+  },
+  "Navbar": {
+    "download": "ダウンロード"
+  },
+  "Testimonials": {
+    "header": "ユーザーの声",
+    "subheader": "Kapiを愛する2,157人以上の満足したユーザーに参加しよう",
+    "seeAllReviews": "すべての2,157件のレビューを見る"
+  },
+  "Notifications": {
+    "title": "製品更新について通知を受け取る",
+    "description": "最新の機能やお知らせを受け取るには、下にメールアドレスを入力してください。",
+    "placeholder": "メールアドレスを入力",
+    "subscribe": "購読する",
+    "subscribing": "購読中...",
+    "thankYou": "ご購読ありがとうございます！",
+    "error": "エラーが発生しました。再試行してください。"
+  },
+  "Footer": {
+    "appName": "Kapi",
+    "description": "魅力的でインタラクティブなレッスンで日本語を学びましょう。今日から私たちと一緒に旅を始めましょう！",
+    "copyright": "© 2024 Kapi. 全著作権所有。"
   }
 }

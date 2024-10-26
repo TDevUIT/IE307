@@ -31,7 +31,9 @@ export default async function RootLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            {children}
+        </body>
       </html>
     </NextIntlClientProvider>
   )
