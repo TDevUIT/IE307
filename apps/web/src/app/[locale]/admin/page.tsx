@@ -1,4 +1,7 @@
 'use client';
+import { setCookieToken } from '@/actions/Cookie';
+import axiosInstance from '@/app/helper/axios';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const AdminLoginPage: React.FC = () => {
@@ -6,11 +9,30 @@ const AdminLoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const router = useRouter();
+  const pathname = usePathname();
+  const langSegment = pathname.split('/')[1];
+  console.log(pathname,langSegment);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
+
+    try {
+      const response = await axiosInstance.post('/auth/sign-in', {
+        email,
+        password,
+      });
+      console.log(response);
+      if (response.data) {
+        await setCookieToken(response.data.data.access_token);
+        router.push(`/${langSegment}/admin/dashboard`);
+      }
+    } catch (error) {
+        setErrorMessage('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false); 
+    }
   };
 
   return (

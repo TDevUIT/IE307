@@ -19,11 +19,11 @@ export class AuthService {
 
   async authenticate(token: string) {
     const profile = await this.getProfile(token);
-
+  
     let user = await this.prismaService.user.findUnique({
       where: { email: profile.data.email },
     });
-
+  
     if (!user) {
       user = await this.prismaService.user.create({
         data: {
@@ -39,7 +39,7 @@ export class AuthService {
     return this.generateTokens(user);
   }
   private async generateTokens(user: User) {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.is_admin };
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: process.env.JWT_SESSION_EXPIRATION,
     });
@@ -98,10 +98,10 @@ export class AuthService {
       });
       if (!user) throw new UnauthorizedException('Invalid user');
       const newAccessToken = this.jwtService.sign(
-        { sub: user.id, email: user.email },
+        { sub: user.id, email: user.email, role: user.is_admin },
         { expiresIn: process.env.JWT_SESSION_EXPIRATION },
       );
-
+  
       return { access_token: newAccessToken };
     } catch (err) {
       console.error('Token error:', err.message);
@@ -146,7 +146,7 @@ export class AuthService {
     if (!passwordMatch) {
       throw new UnauthorizedException('Password is incorrect');
     }
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.is_admin }; 
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: process.env.JWT_RT_SESSION_EXPIRATION,
     });
