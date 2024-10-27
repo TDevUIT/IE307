@@ -45,7 +45,7 @@ export class AdminAuthGuard implements CanActivate {
       request['user'] = {
         id: user.id,
         email: user.email,
-        isAdmin: user.is_admin,
+        role: user.is_admin,
       };
     } catch (error) {
       console.error(error);

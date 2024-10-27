@@ -10,12 +10,12 @@ import Link from "next/link";
 import { useHandleTranslations } from "@/lib/handleTranslations";
 import { AdminSidebar, getIconByKey } from "@/lib/admin.type";
 import { useSidebar } from "@/context/SidebarContext";
+import { useAuth } from "@/context/AuthContext";
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
     const t = useHandleTranslations("Sidebar");
     const { selected, setSelected } = useSidebar();
-
     const options = Object.keys(AdminSidebar).map((key) => ({
         Icon: getIconByKey(key as keyof typeof AdminSidebar),
         key,
@@ -50,15 +50,7 @@ const Sidebar = () => {
     );
 };
 
-export const Option = ({
-    Icon,
-    title,
-    selected,
-    setSelected,
-    open,
-    path,
-    notifs,
-}: {
+export const Option = (props: {
     Icon: IconType;
     title: string;
     selected: keyof typeof AdminSidebar | undefined;
@@ -67,6 +59,7 @@ export const Option = ({
     path: string;
     notifs?: number;
 }) => {
+    const { Icon, title, selected, setSelected, open, path, notifs } = props;
     const pathname = usePathname();
     const langSegment = pathname.split('/')[1];
     return (
@@ -109,8 +102,10 @@ export const Option = ({
 };
 
 const TitleSection = ({ open }: { open: boolean }) => {
+    const [openDropdown, setOpenDropdown] = useState(false);
+    const {profile} = useAuth();
     return (
-        <div className="mb-3 border-b border-slate-300 pb-3">
+        <div className="mb-3 border-b border-slate-300 pb-3 relative" onClick={() => setOpenDropdown(prev => !prev)}>
             <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
                 <div className="flex items-center gap-2">
                     <Logo />
@@ -121,12 +116,31 @@ const TitleSection = ({ open }: { open: boolean }) => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.125 }}
                         >
-                            <span className="block text-xs font-semibold">Admin</span>
+                            <span className="block text-base font-semibold">{profile?.name}</span>
                         </motion.div>
                     )}
                 </div>
-                {open && <FiChevronDown className="mr-2" />}
+                {open && (
+                    <FiChevronDown 
+                        className="mr-2" 
+                    />
+                )}
             </div>
+            {openDropdown && (
+                <motion.div
+                    className="absolute z-10 mt-2 w-48 bg-white border border-slate-300 rounded-md shadow-lg"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
+                >
+                    
+                    <div className="p-2 text-sm hover:bg-slate-100 cursor-pointer">
+                    </div>
+                    <div className="p-2 text-sm hover:bg-slate-100 cursor-pointer">Option 2</div>
+                    <div className="p-2 text-sm hover:bg-slate-100 cursor-pointer">Option 3</div>
+                </motion.div>
+            )}
         </div>
     );
 };

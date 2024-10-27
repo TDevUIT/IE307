@@ -1,6 +1,7 @@
 'use client';
 import { setCookieToken } from '@/actions/Cookie';
 import axiosInstance from '@/app/helper/axios';
+import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -9,6 +10,7 @@ const AdminLoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const {fetchProfile} = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const langSegment = pathname.split('/')[1];
@@ -26,6 +28,7 @@ const AdminLoginPage: React.FC = () => {
       console.log(response);
       if (response.data) {
         await setCookieToken(response.data.data.access_token);
+        await fetchProfile();
         router.push(`/${langSegment}/admin/dashboard`);
       }
     } catch (error) {

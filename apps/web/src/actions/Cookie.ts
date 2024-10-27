@@ -8,7 +8,7 @@ function getRefreshToken() {
 }
 
 function setCookieToken(token: string) {
-    cookies().set('adminToken', token, {
+    cookies().set('access_token', token, {
         httpOnly: true,  
         secure: true,   
         maxAge: 60 * 60 ,  
@@ -20,5 +20,7 @@ function removeTokenFromCookies() {
     cookies().delete('access_token');
     cookies().delete('refresh_token');
 }
-
-export { getAccessToken, removeTokenFromCookies ,setCookieToken, getRefreshToken};
+function removeAccessToken() {
+  cookies().delete('access_token');
+}
+export { getAccessToken, removeTokenFromCookies ,setCookieToken, getRefreshToken, removeAccessToken};

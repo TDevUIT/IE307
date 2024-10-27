@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
   const { pathname } = request.nextUrl;
   const langSegment = pathname.split('/')[1];
-  const token = request.cookies.get('adminToken')?.value;
+  const token = request.cookies.get('access_token')?.value;
+  console.log(token)
 
   if (pathname === `/${langSegment}/admin` && token) {
 
