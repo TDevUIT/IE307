@@ -1,7 +1,7 @@
 'use client';
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { IconType } from "react-icons";
-import { FiChevronDown, FiChevronsRight } from "react-icons/fi";
+import { FiChevronDown, FiChevronsRight, FiLogOut, FiUser } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import logo from '../../public/images/Capy.png';
@@ -10,12 +10,13 @@ import Link from "next/link";
 import { useHandleTranslations } from "@/lib/handleTranslations";
 import { AdminSidebar, getIconByKey } from "@/lib/admin.type";
 import { useSidebar } from "@/context/SidebarContext";
+import { useAuth } from "@/context/AuthContext";
+import { Language, useLanguage } from "@/lib/useLanguage";
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
     const t = useHandleTranslations("Sidebar");
     const { selected, setSelected } = useSidebar();
-
     const options = Object.keys(AdminSidebar).map((key) => ({
         Icon: getIconByKey(key as keyof typeof AdminSidebar),
         key,
@@ -30,7 +31,6 @@ const Sidebar = () => {
             }}
         >
             <TitleSection open={open} />
-
             <div className="space-y-1">
                 {options.map((option) => (
                     <Option
@@ -44,21 +44,12 @@ const Sidebar = () => {
                     />
                 ))}
             </div>
-
             <ToggleClose open={open} setOpen={setOpen} />
         </motion.nav>
     );
 };
 
-export const Option = ({
-    Icon,
-    title,
-    selected,
-    setSelected,
-    open,
-    path,
-    notifs,
-}: {
+export const Option = (props: {
     Icon: IconType;
     title: string;
     selected: keyof typeof AdminSidebar | undefined;
@@ -67,6 +58,7 @@ export const Option = ({
     path: string;
     notifs?: number;
 }) => {
+    const { Icon, title, selected, setSelected, open, path, notifs } = props;
     const pathname = usePathname();
     const langSegment = pathname.split('/')[1];
     return (
@@ -109,8 +101,14 @@ export const Option = ({
 };
 
 const TitleSection = ({ open }: { open: boolean }) => {
-    return (
-        <div className="mb-3 border-b border-slate-300 pb-3">
+    const [openDropdown, setOpenDropdown] = useState(false);
+    const { profile } = useAuth();
+    const pathname = usePathname();
+    const adminPath = pathname.split('/').slice(2).join('/');
+    const { language, handleLanguageChange } = useLanguage();
+
+    return (    
+        <div className="mb-3 border-b border-slate-300 pb-3 relative" onClick={() => setOpenDropdown(prev => !prev)}>
             <div className="flex cursor-pointer items-center justify-between rounded-md transition-colors hover:bg-slate-100">
                 <div className="flex items-center gap-2">
                     <Logo />
@@ -121,12 +119,51 @@ const TitleSection = ({ open }: { open: boolean }) => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.125 }}
                         >
-                            <span className="block text-xs font-semibold">Admin</span>
+                            <span className="block text-base font-semibold">{profile?.name}</span>
                         </motion.div>
                     )}
                 </div>
                 {open && <FiChevronDown className="mr-2" />}
             </div>
+
+            {open && openDropdown && (
+                <motion.div
+                    className="absolute z-10 mt-2 w-52 bg-white border border-slate-300 rounded-lg shadow-lg p-2"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
+                >
+                    <div className="pb-2 border-b border-slate-200 flex justify-center items-center">
+                        {(['VI', 'EN', 'JP'] as Language[]).map((lang) => (
+                            <Link
+                                key={lang}
+                                href={`/${lang.toLowerCase()}/${adminPath}`}
+                                passHref
+                            >
+                                <button
+                                    onClick={() => handleLanguageChange(lang)}
+                                    className={`px-3 py-1 rounded-full transition-colors text-sm font-medium ${
+                                        language === lang 
+                                           ? 'bg-black text-white border-2' 
+                                            : 'text-slate-600 hover:bg-slate-100'
+                                    }`}
+                                >
+                                    {lang}
+                                </button>
+                            </Link>
+                        ))}
+                    </div>
+                    <div className="pt-2">
+                        <div className="flex items-center p-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md cursor-pointer">
+                            <FiUser className="mr-2" /> Profile
+                        </div>
+                        <div className="flex items-center p-2 text-sm text-slate-600 hover:bg-slate-100 rounded-md cursor-pointer">
+                            <FiLogOut className="mr-2" /> Logout
+                        </div>
+                    </div>
+                </motion.div>
+            )}
         </div>
     );
 };

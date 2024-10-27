@@ -1,8 +1,8 @@
 'use client';
-
+import Loading from '@/components/Loading';
 import Sidebar from '@/components/Sidebar';
 import { usePathname } from 'next/navigation';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 interface ProviderProps {
     children: React.ReactNode;
@@ -10,10 +10,21 @@ interface ProviderProps {
 
 const Provider: React.FC<ProviderProps> = ({ children }) => {
     const pathname = usePathname();
+    const [loading, setLoading] = useState(true);
+
     const isAdminPath = useMemo(() => {
         const langSegment = pathname.split('/')[1];
         return pathname === `/${langSegment}/admin`;
     }, [pathname]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timeoutId);
+    }, [pathname]);
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <>
@@ -30,7 +41,6 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
                 </div>
             }
         </>
-        
     );
 };
 
