@@ -2,7 +2,7 @@
 import Loading from '@/components/Loading';
 import Sidebar from '@/components/Sidebar';
 import { usePathname } from 'next/navigation';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, Suspense } from 'react';
 
 interface ProviderProps {
     children: React.ReactNode;
@@ -10,7 +10,7 @@ interface ProviderProps {
 
 const Provider: React.FC<ProviderProps> = ({ children }) => {
     const pathname = usePathname();
-    const [loading, setLoading] = useState(true);
+    const [delayed, setDelayed] = useState(true);
 
     const isAdminPath = useMemo(() => {
         const langSegment = pathname.split('/')[1];
@@ -18,16 +18,16 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
     }, [pathname]);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => setLoading(false), 1000);
+        const timeoutId = setTimeout(() => setDelayed(false), 1000);
         return () => clearTimeout(timeoutId);
     }, [pathname]);
 
-    if (loading) {
+    if (delayed) {
         return <Loading />;
     }
 
     return (
-        <>
+        <Suspense fallback={<Loading />}>
             {!isAdminPath ? 
                 <div className="flex min-h-screen">
                     <Sidebar />
@@ -40,7 +40,7 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
                     {children}
                 </div>
             }
-        </>
+        </Suspense>
     );
 };
 
