@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { motion } from 'framer-motion'
 
@@ -14,7 +15,7 @@ const Loading: React.FC = () => {
         transition={{
           repeat: Infinity,
           duration: 1.5,
-          ease: [0.4, 0, 0.2, 1], // Ease-out for a smoother finish
+          ease: [0.4, 0, 0.2, 1], 
         }}
       />
     </div>

@@ -1,6 +1,4 @@
 import Navbar from '@/components/Navbar';
-import React from 'react';
-
 interface ProviderProps {
   children: React.ReactNode;
 }
@@ -8,8 +6,8 @@ interface ProviderProps {
 const LandingPageProvider: React.FC<ProviderProps> = ({ children }) => {
   return (
     <div>
-      <Navbar />
-      {children}  
+        <Navbar />
+        {children}  
     </div>
   );
 };
