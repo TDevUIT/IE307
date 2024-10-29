@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -13,8 +14,8 @@ import { Request } from 'express';
 import { Course, Lesson } from '@prisma/client';
 import { CourseService } from './course.service';
 import { AuthGuard as JWTGuard } from '../../guard/google.guard';
-import { CreateCourseDto, UpdateCourseDto } from 'src/dto/courseDto';
-import { AdminAuthGuard } from 'src/guard/admin.guard';
+import { CreateCourseDto, UpdateCourseDto } from '../../dto/courseDto';
+import { AdminAuthGuard } from '../../guard/admin.guard';
 @Controller('course')
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
