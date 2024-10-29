@@ -9,6 +9,7 @@ import { CloudinaryModule } from './module/cloudinary/cloudinary.module';
 import { LessonModule } from './module/lesson/lesson.module';
 import { NotificationsModule } from './module/notification/notification.module';
 import { HealthModule } from './module/healthy/healthy.module';
+import { VocabularyModule } from './module/vocabulary/vocabulary.module';
 @Module({
   imports: [
     PrismaModule,
@@ -23,6 +24,7 @@ import { HealthModule } from './module/healthy/healthy.module';
     HealthModule,
     NotificationsModule,
     CloudinaryModule,
+    VocabularyModule,
   ],
   controllers: [],
   providers: [],
