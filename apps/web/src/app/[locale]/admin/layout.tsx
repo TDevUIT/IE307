@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { AuthProvider } from '@/context/AuthContext';
 import { SidebarProvider } from '@/context/SidebarContext';
 import Provider from '@/provider/Provider';
@@ -12,7 +11,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const messages = await getMessages();
-  const CookieStore = cookies();
+  const CookieStore = await cookies();
   const accessToken = CookieStore.get('access_token');
 
   return (

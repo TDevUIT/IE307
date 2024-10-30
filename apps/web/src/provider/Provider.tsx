@@ -1,4 +1,5 @@
 'use client';
+import dynamic from 'next/dynamic';
 import Loading from '@/components/Loading';
 import Sidebar from '@/components/Sidebar';
 import { usePathname } from 'next/navigation';
@@ -13,6 +14,7 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
     const [delayed, setDelayed] = useState(true);
 
     const isAdminPath = useMemo(() => {
+        if (!pathname) return false;  
         const langSegment = pathname.split('/')[1];
         return pathname === `/${langSegment}/admin`;
     }, [pathname]);
@@ -44,4 +46,4 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
     );
 };
 
-export default Provider;
+export default dynamic(() => Promise.resolve(Provider), { ssr: false });
