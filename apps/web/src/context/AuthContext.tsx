@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import axiosInstance from '@/app/helper/axios';
@@ -48,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode; initialAccessToken?: 
     const [token, setToken] = useState<string | null>(initialAccessToken || null);
     const router = useRouter();
 
-    const fetchProfile = async (retryCount = 0) => {
+    const fetchProfile = useCallback(async (retryCount = 0) => {
         try {
             const { data } = await axiosInstance.get('/auth/profile');
             if (data) {
@@ -67,14 +68,14 @@ export const AuthProvider: React.FC<{ children: ReactNode; initialAccessToken?: 
                 handleAuthError();
             }
         }
-    };
+    }, []);
 
-    const handleAuthError = async () => {
+    const handleAuthError = useCallback(async () => {
         await removeAccessToken();
         setIsLogged(false);
         setProfile(null);
         if (!loading) router.push('/admin');
-    };
+    }, [loading, router]);
 
     useEffect(() => {
         const checkAuthAndFetchProfile = async () => {
@@ -86,7 +87,7 @@ export const AuthProvider: React.FC<{ children: ReactNode; initialAccessToken?: 
             setLoading(false);
         };
         checkAuthAndFetchProfile();
-    }, [token]);
+    }, [token, fetchProfile]); 
 
     return (
         <AuthContext.Provider
