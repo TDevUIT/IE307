@@ -4,11 +4,12 @@ import Provider from '@/provider/Provider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { cookies } from 'next/headers';
+import { ReactNode } from 'react'; 
 
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode; 
 }) {
   const messages = await getMessages();
   const CookieStore = await cookies();
@@ -19,7 +20,7 @@ export default async function RootLayout({
       <AuthProvider initialAccessToken={accessToken?.value}>
         <SidebarProvider>
           <Provider>
-              {children}
+            {children}
           </Provider>
         </SidebarProvider>
       </AuthProvider>
