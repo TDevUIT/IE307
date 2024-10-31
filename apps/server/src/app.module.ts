@@ -11,6 +11,7 @@ import { NotificationsModule } from './module/notification/notification.module';
 import { HealthModule } from './module/healthy/healthy.module';
 import { VocabularyModule } from './module/vocabulary/vocabulary.module';
 import { GrammarModule } from './module/grammar/grammar.module';
+import { MinitestModule } from './module/minitest/minitest.module';
 @Module({
   imports: [
     PrismaModule,
@@ -27,6 +28,7 @@ import { GrammarModule } from './module/grammar/grammar.module';
     CloudinaryModule,
     VocabularyModule,
     GrammarModule,
+    MinitestModule,
   ],
   controllers: [],
   providers: [],
