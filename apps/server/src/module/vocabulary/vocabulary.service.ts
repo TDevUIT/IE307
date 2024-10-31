@@ -2,6 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateVocabularyDto } from './dto/create-vocabulary.dto';
+import { CreateVocabularyStatusDto } from './dto/create-status.dto';
+import { UpdateVocabularyStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class VocabularyService {
@@ -15,9 +17,9 @@ export class VocabularyService {
   async getALL() {
     return await this.prismaService.vocabulary.findMany();
   }
-  async getVocabularyById(id: string) {
+  async getVocabularyById(vocabularyId: string) {
     return await this.prismaService.vocabulary.findUnique({
-      where: { id },
+      where: { id: vocabularyId },
     });
   }
   async createVocabulary(vocabularyInput: CreateVocabularyDto,lessonId: string) {
@@ -30,9 +32,45 @@ export class VocabularyService {
       }
     });
   }
-  async deleteVocabulary(id: string) {
+  async deleteVocabulary(vocabularyId: string) {
     await this.prismaService.vocabulary.delete({
-      where: { id },
+      where: { id: vocabularyId },
+    });
+  }
+  async getVocabularyStatus(vocabularyId:string){
+    return await this.prismaService.vocabularyStatus.findUnique({
+      where: { id: vocabularyId },
+    });
+  }
+  async getAllVocabularyStatus(){
+    return await this.prismaService.vocabularyStatus.findMany();
+  }
+  async createVocabularyStatus(vocabularyStatus: CreateVocabularyStatusDto, vocabularyId: string,userId: string){
+    return await this.prismaService.vocabularyStatus.create({
+      data: {
+        vocabulary: { connect: { id: vocabularyId } },
+        status: vocabularyStatus.status,
+        learnedAt: new Date(),
+        nextReviewAt: new Date(),
+        reviewStage: 1,
+        user: { connect: { id: userId } }, 
+      }
+    });
+}
+  async updateVocabularyStatus(vocabularyId: string, vocabularyStatus: UpdateVocabularyStatusDto) {
+    return await this.prismaService.vocabularyStatus.update({
+      where: { id: vocabularyId },
+      data: {
+        status: vocabularyStatus.status,
+        learnedAt: new Date(),
+        nextReviewAt: new Date(),
+        reviewStage: 1,
+      }
+    });
+  }
+  async deleteVocabularyStatus(vocabularyId: string) {
+    await this.prismaService.vocabularyStatus.delete({
+      where: { id: vocabularyId },
     });
   }
 }
