@@ -10,6 +10,7 @@ import { LessonModule } from './module/lesson/lesson.module';
 import { NotificationsModule } from './module/notification/notification.module';
 import { HealthModule } from './module/healthy/healthy.module';
 import { VocabularyModule } from './module/vocabulary/vocabulary.module';
+import { GrammarModule } from './module/grammar/grammar.module';
 @Module({
   imports: [
     PrismaModule,
@@ -25,6 +26,7 @@ import { VocabularyModule } from './module/vocabulary/vocabulary.module';
     NotificationsModule,
     CloudinaryModule,
     VocabularyModule,
+    GrammarModule,
   ],
   controllers: [],
   providers: [],
