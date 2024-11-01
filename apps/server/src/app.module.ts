@@ -12,6 +12,7 @@ import { HealthModule } from './module/healthy/healthy.module';
 import { VocabularyModule } from './module/vocabulary/vocabulary.module';
 import { GrammarModule } from './module/grammar/grammar.module';
 import { MinitestModule } from './module/minitest/minitest.module';
+import { FlashcardModule } from './module/flashcard/flashcard.module';
 @Module({
   imports: [
     PrismaModule,
@@ -29,6 +30,7 @@ import { MinitestModule } from './module/minitest/minitest.module';
     VocabularyModule,
     GrammarModule,
     MinitestModule,
+    FlashcardModule,
   ],
   controllers: [],
   providers: [],
