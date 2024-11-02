@@ -12,8 +12,8 @@ export default async function RootLayout({
   children: ReactNode; 
 }) {
   const messages = await getMessages();
-  const CookieStore = await cookies();
-  const accessToken = CookieStore.get('access_token');
+  const CookieStore = cookies();
+  const accessToken = (await CookieStore).get('access_token');
 
   return (
     <NextIntlClientProvider messages={messages}>
