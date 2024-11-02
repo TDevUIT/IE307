@@ -20,6 +20,14 @@ import { AdminAuthGuard } from '../../guard/admin.guard';
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
+  @Post('bulk')
+  async createBulkCourses(
+    @Body() createCoursesDto: CreateCourseDto[],
+  ): Promise<Course[]> {
+    return this.courseService.createBulkCourses(createCoursesDto);
+  }
+
+
   @UseGuards(JWTGuard)
   @Get()
   async getCourses(@Req() req: Request): Promise<Course[]> {

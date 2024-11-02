@@ -9,6 +9,15 @@ import { UpdateFlashcardDto } from './dto/update-flashcard.dto';
 @Controller('flashcard')
 export class FlashcardController {
   constructor(private readonly flashcardService: FlashcardService) {}
+
+  @Post('bulk/:lessonId')
+  async createFlashcardsBulk(
+    @Param('lessonId') lessonId: string,
+    @Body() createFlashcardsDto: CreateFlashcardDto[],
+  ) {
+    return this.flashcardService.createFlashcardsBulk(createFlashcardsDto, lessonId);
+  }
+
   @Get()
   @UseGuards(JWTGuard)
   @UseGuards(AdminAuthGuard)
@@ -49,4 +58,6 @@ export class FlashcardController {
   ) {
     return this.flashcardService.updateFlashcard(flashcardId, flashcard);
   }
+ 
+
 }

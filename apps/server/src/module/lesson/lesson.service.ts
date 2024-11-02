@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 
 import { CreateLessonDto, UpdateLessonDto } from 'src/dto/lessonDto';
@@ -41,6 +42,23 @@ export class LessonService {
     return lesson;
   }
 
+  async createLessonsBulk(createLessonsDto: CreateLessonDto[]) {
+    const lessons = createLessonsDto.map(({ title, content, courseId}) => {
+  
+      return {
+        title,
+        content,
+        courseId,
+      };
+    });
+  
+    const createdLessons = await this.prisma.lesson.createMany({
+      data: lessons,
+    });
+  
+    return createdLessons;
+  }
+  
   async getAllLessons() {
     return this.prisma.lesson.findMany({
       include: {

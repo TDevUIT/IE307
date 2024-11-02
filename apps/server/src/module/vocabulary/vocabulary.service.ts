@@ -73,4 +73,15 @@ export class VocabularyService {
       where: { id: vocabularyId },
     });
   }
+  async createBulkVocabulary(vocabularies: CreateVocabularyDto[], lessonId: string) {
+    return await this.prismaService.vocabulary.createMany({
+      data: vocabularies.map((vocabulary) => ({
+        wordJP: vocabulary.wordJP,
+        wordVN: vocabulary.wordVN,
+        kanji: vocabulary.kanji,
+        lessonId: lessonId,
+      })),
+    });
+  }
+  
 }
