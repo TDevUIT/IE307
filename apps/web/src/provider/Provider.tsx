@@ -1,5 +1,4 @@
 'use client';
-import dynamic from 'next/dynamic';
 import Loading from '@/components/Loading';
 import Sidebar from '@/components/Sidebar';
 import { usePathname } from 'next/navigation';
@@ -20,30 +19,26 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
     }, [pathname]);
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => setDelayed(false), 1000);
-        return () => clearTimeout(timeoutId);
+        if (typeof window !== 'undefined') {
+            const timeoutId = setTimeout(() => setDelayed(false), 1000);
+            return () => clearTimeout(timeoutId);
+        }
     }, [pathname]);
 
-    if (delayed) {
+    if (typeof window === 'undefined' || delayed) { 
         return <Loading />;
     }
 
     return (
-        <Suspense fallback={<Loading />}>
-            {!isAdminPath ? 
-                <div className="flex min-h-screen">
-                    <Sidebar />
-                    <main className="flex-grow p-4 sm:p-6 md:p-8">
-                        {children}
-                    </main>
-                </div>
-                :
-                <div>
+        <div className="flex min-h-screen">
+            {!isAdminPath && <Sidebar />}
+            <main className="flex-grow p-4 sm:p-6 md:p-8">
+                <Suspense fallback={<Loading />} key={pathname}>
                     {children}
-                </div>
-            }
-        </Suspense>
+                </Suspense>
+            </main>
+        </div>
     );
 };
 
-export default dynamic(() => Promise.resolve(Provider), { ssr: false });
+export default Provider;
