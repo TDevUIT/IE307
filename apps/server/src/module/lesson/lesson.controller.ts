@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Post,
@@ -22,6 +23,12 @@ export class LessonController {
   async createLesson(@Body() createLessonDto: CreateLessonDto) {
     return this.lessonService.createLesson(createLessonDto);
   }
+
+  @Post('bulk')
+async createLessonsBulk(@Body() createLessonsDto: CreateLessonDto[]) {
+  return this.lessonService.createLessonsBulk(createLessonsDto);
+}
+
 
   @UseGuards(JWTGuard)
   @Get()

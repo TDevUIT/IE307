@@ -77,4 +77,12 @@ export class VocabularyController {
   async deleteVocabularyStatus(@Param('id') vocabularyId: string) {
     return this.vocabularyService.deleteVocabularyStatus(vocabularyId);
   }
+  @Post('bulk/:lessonId')
+async createBulkVocabulary(
+  @Body() vocabularies: CreateVocabularyDto[],
+  @Param('lessonId') lessonId: string,
+) {
+  return this.vocabularyService.createBulkVocabulary(vocabularies, lessonId);
+}
+
 }

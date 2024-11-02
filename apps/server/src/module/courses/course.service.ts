@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Course, Lesson } from '@prisma/client';
 import { CreateCourseDto, UpdateCourseDto } from 'src/dto/courseDto';
@@ -59,5 +60,14 @@ export class CourseService {
     return this.prisma.course.delete({
       where: { id },
     });
+  }
+  async createBulkCourses(createCoursesDto: CreateCourseDto[]): Promise<Course[]> {
+    return this.prisma.$transaction(
+      createCoursesDto.map((courseDto) =>
+        this.prisma.course.create({
+          data: courseDto,
+        })
+      )
+    );
   }
 }

@@ -57,4 +57,15 @@ export class FlashcardService {
         },
       });
     }
+    async createFlashcardsBulk(flashcards: CreateFlashcardDto[], lessonId: string) {
+      return await this.prismaService.flashCard.createMany({
+        data: flashcards.map(flashcard => ({
+          term: flashcard.term,
+          definition: flashcard.definition,
+          kanji: flashcard.kanji,
+          lessonId: lessonId,
+        })),
+      });
+    }
+    
 }
