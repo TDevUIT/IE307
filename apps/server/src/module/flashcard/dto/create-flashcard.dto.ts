@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { IsNotEmpty, IsString } from 'class-validator';
-export class CreateVocabularyDto {
+export class CreateFlashcardDto {
   @IsNotEmpty()
   @IsString()
-  wordJP: string;
+  term: string;
   @IsNotEmpty()
   @IsString()
-  wordVN: string;
+  definition: string;
   @IsNotEmpty()
   @IsString()
   kanji: string;
