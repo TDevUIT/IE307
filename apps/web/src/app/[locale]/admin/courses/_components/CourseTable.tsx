@@ -1,37 +1,84 @@
 import React from 'react';
+import { useTable } from 'react-table';
 
-interface CourseTableProps {
-  onEdit: () => void;
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  createdBy: string;
+  lessons: number;
+  createdAt: string;
 }
 
-const CourseTable: React.FC<CourseTableProps> = ({ onEdit }) => {
-  return (
-    <table className="w-full border border-gray-300">
-      <thead>
-        <tr>
-          <th className="border px-4 py-2">Title</th>
-          <th className="border px-4 py-2">Description</th>
-          <th className="border px-4 py-2">Lessons</th>
-          <th className="border px-4 py-2">Created By</th>
-          <th className="border px-4 py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="border px-4 py-2">Japanese N5</td>
-          <td className="border px-4 py-2">Basic level Japanese course</td>
-          <td className="border px-4 py-2">12</td>
-          <td className="border px-4 py-2">Admin</td>
-          <td className="border px-4 py-2">
-            <button onClick={onEdit} className="text-blue-500 hover:underline">
+interface CourseTableProps {
+  courses: Course[];
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+const CourseTable: React.FC<CourseTableProps> = ({ courses, onEdit, onDelete }) => {
+  const data = React.useMemo(() => courses, [courses]);
+
+  const columns = React.useMemo(
+    () => [
+      { Header: 'Title', accessor: 'title' },
+      { Header: 'Description', accessor: 'description' },
+      { Header: 'Lessons', accessor: 'lessons' },
+      { Header: 'Created By', accessor: 'createdBy' },
+      {
+        Header: 'Actions',
+        Cell: ({ row }: { row: any }) => (
+          <div>
+            <button
+              onClick={() => onEdit(row.original.id)}
+              className="text-blue-500 hover:underline"
+            >
               Edit
             </button>
-            <button className="ml-2 text-red-500 hover:underline">
+            <button
+              onClick={() => onDelete(row.original.id)}
+              className="ml-2 text-red-500 hover:underline"
+            >
               Delete
             </button>
-          </td>
-        </tr>
-        {/* More rows */}
+          </div>
+        ),
+      },
+    ],
+    [onEdit, onDelete]
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+    columns,
+    data,
+  });
+
+  return (
+    <table {...getTableProps()} className="w-full border border-gray-300">
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+            {headerGroup.headers.map((column) => (
+              <th {...column.getHeaderProps()} key={column.id} className="border px-4 py-2">
+                {column.render('Header')}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()} key={row.id}>
+              {row.cells.map((cell) => (
+                <td {...cell.getCellProps()} key={cell.column.id} className="border px-4 py-2">
+                  {cell.render('Cell')}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

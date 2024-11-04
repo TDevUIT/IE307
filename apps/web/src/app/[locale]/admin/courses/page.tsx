@@ -1,11 +1,10 @@
-'use client'
-import React from 'react';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+'use client';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import CourseTable from './_components/CourseTable';
 import CourseModal from './_components/CourseModal';
 
-const CourcesPage: React.FC = () => {
+const CoursesPage: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
@@ -19,16 +18,24 @@ const CourcesPage: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-xl font-bold mb-4">Courses Management</h1>
-          <button onClick={handleOpenModal} className="btn btn-primary mb-4">
+          <h1 className="text-2xl font-bold mb-6">Courses Management</h1>
+          <button 
+            onClick={handleOpenModal} 
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-4 shadow-md transition-colors duration-200"
+          >
             Add New Course
           </button>
           <CourseTable onEdit={handleOpenModal} />
-          {isModalOpen && <CourseModal onClose={handleCloseModal} />}
         </motion.div>
+        
+        <AnimatePresence>
+          {isModalOpen && (
+            <CourseModal onClose={handleCloseModal} />
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );
 };
 
-export default CourcesPage;
+export default CoursesPage;
