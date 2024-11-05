@@ -1,36 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Course } from '@/app/types/types';
 import React from 'react';
-import { useTable } from 'react-table';
-
-interface Course {
-  id: string;
-  title: string;
-  description: string;
-  createdBy: string;
-  lessons: number;
-  createdAt: string;
-}
+import { useTable, Column } from 'react-table';
 
 interface CourseTableProps {
   courses: Course[];
-  onEdit: (id: string) => void;
+  onEdit: (course: Course) => void;
   onDelete: (id: string) => void;
 }
 
-const CourseTable: React.FC<CourseTableProps> = ({ courses, onEdit, onDelete }) => {
+const CourseTable: React.FC<CourseTableProps> = ({ courses = [], onEdit, onDelete }) => {
   const data = React.useMemo(() => courses, [courses]);
 
-  const columns = React.useMemo(
+  const columns = React.useMemo<Column<Course>[]>(
     () => [
-      { Header: 'Title', accessor: 'title' },
-      { Header: 'Description', accessor: 'description' },
-      { Header: 'Lessons', accessor: 'lessons' },
-      { Header: 'Created By', accessor: 'createdBy' },
+      { Header: 'Title', accessor: 'title' as const },
+      { Header: 'Description', accessor: 'description' as const },
+      {
+        Header: 'Lessons',
+        accessor: (course: Course) => course.lessons?.length || 0,
+        Cell: ({ value }: { value: number }) => <span>{value} lessons</span>,
+      },
+      {
+        Header: 'Created By',
+        accessor: (course: Course) => course.createdBy?.name || 'Unknown',
+        Cell: ({ value }: { value: string }) => <span>{value}</span>,
+      },
       {
         Header: 'Actions',
-        Cell: ({ row }: { row: any }) => (
+        Cell: ({ row }: { row: { original: Course } }) => (
           <div>
             <button
-              onClick={() => onEdit(row.original.id)}
+              onClick={() => onEdit(row.original)}
               className="text-blue-500 hover:underline"
             >
               Edit

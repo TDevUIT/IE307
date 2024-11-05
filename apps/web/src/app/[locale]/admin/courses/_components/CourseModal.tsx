@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface CourseModalProps {
+  course?: { title: string; description: string } | null;
   onClose: () => void;
+  onSave: (data: { title: string; description: string }) => Promise<void>;
 }
 
-const CourseModal: React.FC<CourseModalProps> = ({ onClose }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+const CourseModal: React.FC<CourseModalProps> = ({ course, onClose, onSave }) => {
+  const [title, setTitle] = useState(course?.title || '');
+  const [description, setDescription] = useState(course?.description || '');
+  const [loading, setLoading] = useState(false);
 
-  const handleSave = (event: React.FormEvent) => {
+  const handleSave = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Save course logic goes here
-    onClose();
+    setLoading(true);
+    await onSave({ title, description });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -37,7 +41,7 @@ const CourseModal: React.FC<CourseModalProps> = ({ onClose }) => {
         transition={{ type: 'spring', stiffness: 200 }}
         className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4"
       >
-        <h2 className="text-xl font-semibold mb-6">Add / Edit Course</h2>
+        <h2 className="text-xl font-semibold mb-6">{course ? 'Edit Course' : 'Add Course'}</h2>
         <form onSubmit={handleSave}>
           <label className="block mb-4">
             Title:
@@ -47,6 +51,7 @@ const CourseModal: React.FC<CourseModalProps> = ({ onClose }) => {
               onChange={(e) => setTitle(e.target.value)} 
               className="w-full border border-gray-300 p-2 rounded mt-1"
               placeholder="Enter course title"
+              disabled={loading}
             />
           </label>
           <label className="block mb-4">
@@ -56,6 +61,7 @@ const CourseModal: React.FC<CourseModalProps> = ({ onClose }) => {
               onChange={(e) => setDescription(e.target.value)} 
               className="w-full border border-gray-300 p-2 rounded mt-1"
               placeholder="Enter course description"
+              disabled={loading}
             />
           </label>
           <div className="flex justify-end mt-6">
@@ -63,14 +69,16 @@ const CourseModal: React.FC<CourseModalProps> = ({ onClose }) => {
               type="button" 
               onClick={onClose} 
               className="text-gray-500 mr-4 hover:text-gray-700 transition-colors"
+              disabled={loading}
             >
               Cancel
             </button>
             <button 
               type="submit" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-md transition-colors duration-200"
+              disabled={loading}
             >
-              Save
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>
