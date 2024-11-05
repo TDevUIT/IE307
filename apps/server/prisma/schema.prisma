@@ -81,12 +81,12 @@ model Lesson {
   id                 String              @id @default(uuid())
   title              String
   content            String              // URL to video
-  courseId           String
+  courseId           String?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 
   // Relations
-  course             Course              @relation("CourseLessons", fields: [courseId], references: [id])
+  course             Course?              @relation("CourseLessons", fields: [courseId], references: [id])
   flashCards         FlashCard[]
   grammars           Grammar[]
   vocabularies       Vocabulary[]

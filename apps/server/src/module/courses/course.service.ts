@@ -7,8 +7,30 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class CourseService {
   constructor(private readonly prisma: PrismaService) {}
-  async getCourses(userId: string): Promise<Course[]> {
-    return this.prisma.course.findMany({
+
+  async getCourses(): Promise<Course[]> {
+    return await this.prisma.course.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
+        lessons: false,
+        createdAt: true,
+        updatedAt: true,
+        statuses: false,
+        createdById: true,
+      }
+    });
+  }
+
+  async getCoursesByUserId(userId: string): Promise<Course[]> {
+    return await this.prisma.course.findMany({
       where: {
         createdById: userId,
       },
@@ -17,6 +39,7 @@ export class CourseService {
       },
     });
   }
+
   async getCourseDetails(id: string): Promise<Course> {
     const course = await this.prisma.course.findUnique({
       where: { id },
@@ -32,6 +55,7 @@ export class CourseService {
 
     return course;
   }
+
   async getLessonsByCourseId(id: string): Promise<Lesson[]> {
     const course = await this.prisma.course.findUnique({
       where: { id },
@@ -45,27 +69,42 @@ export class CourseService {
     }
     return course.lessons;
   }
-  async createCourse(createCourse: CreateCourseDto) {
+
+  async createCourse(createCourse: CreateCourseDto, createdById: string): Promise<Course> {
     return this.prisma.course.create({
-      data: createCourse,
+      data: {
+        ...createCourse,
+        createdBy: { connect: { id: createdById } },
+      },
     });
   }
-  async updateCourse(id: string, updateCourse: UpdateCourseDto) {
+
+  async updateCourse(id: string, updateCourse: UpdateCourseDto): Promise<Course> {
     return this.prisma.course.update({
       where: { id },
       data: updateCourse,
     });
   }
-  async deleteCourse(id: string) {
-    return this.prisma.course.delete({
+
+  async deleteCourse(id: string): Promise<void> {
+    await this.prisma.lesson.updateMany({
+      where: { courseId: id },
+      data: { courseId: null },
+    });
+    await this.prisma.course.delete({
       where: { id },
     });
   }
-  async createBulkCourses(createCoursesDto: CreateCourseDto[]): Promise<Course[]> {
+
+  async createBulkCourses(createCoursesDto: CreateCourseDto[], createdById: string): Promise<Course[]> {
     return this.prisma.$transaction(
       createCoursesDto.map((courseDto) =>
         this.prisma.course.create({
-          data: courseDto,
+          data: {
+            ...courseDto,
+            createdById,
+          },
+
         })
       )
     );

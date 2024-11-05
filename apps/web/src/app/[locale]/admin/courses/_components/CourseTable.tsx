@@ -1,37 +1,85 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Course } from '@/app/types/types';
 import React from 'react';
+import { useTable, Column } from 'react-table';
 
 interface CourseTableProps {
-  onEdit: () => void;
+  courses: Course[];
+  onEdit: (course: Course) => void;
+  onDelete: (id: string) => void;
 }
 
-const CourseTable: React.FC<CourseTableProps> = ({ onEdit }) => {
-  return (
-    <table className="w-full border border-gray-300">
-      <thead>
-        <tr>
-          <th className="border px-4 py-2">Title</th>
-          <th className="border px-4 py-2">Description</th>
-          <th className="border px-4 py-2">Lessons</th>
-          <th className="border px-4 py-2">Created By</th>
-          <th className="border px-4 py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="border px-4 py-2">Japanese N5</td>
-          <td className="border px-4 py-2">Basic level Japanese course</td>
-          <td className="border px-4 py-2">12</td>
-          <td className="border px-4 py-2">Admin</td>
-          <td className="border px-4 py-2">
-            <button onClick={onEdit} className="text-blue-500 hover:underline">
+const CourseTable: React.FC<CourseTableProps> = ({ courses = [], onEdit, onDelete }) => {
+  const data = React.useMemo(() => courses, [courses]);
+
+  const columns = React.useMemo<Column<Course>[]>(
+    () => [
+      { Header: 'Title', accessor: 'title' as const },
+      { Header: 'Description', accessor: 'description' as const },
+      {
+        Header: 'Lessons',
+        accessor: (course: Course) => course.lessons?.length || 0,
+        Cell: ({ value }: { value: number }) => <span>{value} lessons</span>,
+      },
+      {
+        Header: 'Created By',
+        accessor: (course: Course) => course.createdBy?.name || 'Unknown',
+        Cell: ({ value }: { value: string }) => <span>{value}</span>,
+      },
+      {
+        Header: 'Actions',
+        Cell: ({ row }: { row: { original: Course } }) => (
+          <div>
+            <button
+              onClick={() => onEdit(row.original)}
+              className="text-blue-500 hover:underline"
+            >
               Edit
             </button>
-            <button className="ml-2 text-red-500 hover:underline">
+            <button
+              onClick={() => onDelete(row.original.id)}
+              className="ml-2 text-red-500 hover:underline"
+            >
               Delete
             </button>
-          </td>
-        </tr>
-        {/* More rows */}
+          </div>
+        ),
+      },
+    ],
+    [onEdit, onDelete]
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+    columns,
+    data,
+  });
+
+  return (
+    <table {...getTableProps()} className="w-full border border-gray-300">
+      <thead>
+        {headerGroups.map((headerGroup) => (
+          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+            {headerGroup.headers.map((column) => (
+              <th {...column.getHeaderProps()} key={column.id} className="border px-4 py-2">
+                {column.render('Header')}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <tr {...row.getRowProps()} key={row.id}>
+              {row.cells.map((cell) => (
+                <td {...cell.getCellProps()} key={cell.column.id} className="border px-4 py-2">
+                  {cell.render('Cell')}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );
