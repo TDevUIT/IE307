@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import JLPTScreen from '~/screens/lesson/lessonScreen';
 const Lesson = () => {
   return (
-    <View>
-      <Text>Lesson</Text>
-    </View>
+      <JLPTScreen />
   );
 };
 
