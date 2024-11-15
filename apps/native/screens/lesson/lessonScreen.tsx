@@ -2,6 +2,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { useCourseContext } from '~/context/CourseContext';
 
 interface JLPTLessonProps {
   lesson: string;
@@ -20,20 +21,19 @@ const JLPTLesson: React.FC<JLPTLessonProps> = ({ lesson }) => {
     </View>
   );
 };
-
 interface JLPTSectionProps {
   title: string;
-  levels: { level: number; name: string; lesson: string[] }[];
+  levels: { level: number; name: string; lesson: string[] }[]; 
 }
 
 const JLPTSection: React.FC<JLPTSectionProps> = ({ title, levels }) => {
   const [expanded, setExpanded] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({}); // Lưu trạng thái mở/đóng cho từng mục
+  const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({}); // Track expanded sections
 
   const toggleItem = (index: number) => {
     setExpandedItems((prev) => ({
       ...prev,
-      [index]: !prev[index], // Đảo ngược trạng thái mở/đóng cho mục được bấm
+      [index]: !prev[index], 
     }));
   };
 
@@ -86,40 +86,29 @@ const JLPTSection: React.FC<JLPTSectionProps> = ({ title, levels }) => {
 };
 
 const JLPTScreen = () => {
-  const jlptData: { [key: string]: { level: number; name: string; lesson: string[] }[] } = {
-    'JLPT N5': [],
-    'JLPT N4': [],
-    'JLPT N3': [
-      {
-        level: 1,
-        name: 'Ôn tập N4',
-        lesson: ['Từ vựng 1', 'Ngữ pháp 1', 'Hán tự 1', 'Từ vựng 2', 'Ngữ pháp 2', 'Hán tự 2'],
-      },
-      {
-        level: 2,
-        name: 'Chunbi',
-        lesson: ['Từ vựng 1', 'Ngữ pháp 1', 'Hán tự 1', 'Từ vựng 2', 'Ngữ pháp 2', 'Hán tự 2'],
-      },
-      {
-        level: 3,
-        name: 'Taisaku',
-        lesson: ['Danh từ 1', 'Tính từ', 'Nghe hiểu 1', 'Hán tự 1'],
-      },
-      {
-        level: 4,
-        name: 'Luyện đề',
-        lesson: ['Đề 1', 'Đề 2', 'Đề 3', 'Đề 4'],
-      },
-    ],
-    'JLPT N2': [],
-    'JLPT N1': [],
-  };
+  const { courses, lessons, loading, error } = useCourseContext();
+  
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error: {error}</Text>;
+  }
 
   return (
     <View className="flex-1">
       <ScrollView className="p-4 pt-6" contentContainerStyle={{ paddingBottom: 20 }}>
-        {Object.keys(jlptData).map((jlptLevel) => (
-          <JLPTSection key={jlptLevel} title={jlptLevel} levels={jlptData[jlptLevel]} />
+        {courses.map((course) => (
+          <View key={course.id}>
+            <Text>{course.title}</Text>
+            {lessons[course.id]?.map((lesson) => (
+              <View key={lesson.id}>
+                <Text>{lesson.title}</Text>
+                <Text>{lesson.description}</Text>
+              </View>
+            ))}
+          </View>
         ))}
       </ScrollView>
     </View>
