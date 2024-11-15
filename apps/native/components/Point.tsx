@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, Pressable, Image, LayoutAnimation } from 'react-native';
 
-import { icons } from '~/utils/icon'; // Make sure the icon paths are correct.
+import { icons } from '~/utils/icon';
 
 type ExpandedState = {
   vocabulary: boolean;
