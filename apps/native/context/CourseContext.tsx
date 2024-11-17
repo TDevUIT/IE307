@@ -1,7 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
-import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+
 import axiosInstance from '~/helper/axios';
 interface Lesson {
   id: string;
@@ -39,7 +38,7 @@ export const useCourseContext = () => {
   return context;
 };
 
-export const CourseProvider: React.FC = ({ children }) => {
+export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [lessons, setLessons] = useState<{ [key: string]: Lesson[] }>({});
   const [loading, setLoading] = useState<boolean>(true);

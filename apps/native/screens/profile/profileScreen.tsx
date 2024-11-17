@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, Linking, Alert, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 
 interface UserProfile {
   id: number;
@@ -69,16 +69,12 @@ const ProfileScreen = () => {
 
     try {
       const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.post(
-        `${IPv4}/user/${userProfile.id}/picture`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${IPv4}/user/${userProfile.id}/picture`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
       Alert.alert('Picture updated successfully!');
       const data = response.data as { secure_url: string };
       setUserProfile({ ...userProfile, picture: data.secure_url });
@@ -110,39 +106,46 @@ const ProfileScreen = () => {
   }
 
   return (
-    <ScrollView className="flex-1 p-1 bg-white pt-2">
-      <View className="items-center mb-5">
-        <View className="border-2 border-orange-500 rounded-full mb-5">
-          <Image source={{ uri: selectedImage || userProfile.picture }} className="w-36 h-36 rounded-full" />
+    <ScrollView className="flex-1 bg-white p-1 pt-2">
+      <View className="mb-5 items-center">
+        <View className="mb-5 rounded-full border-2 border-orange-500">
+          <Image
+            source={{ uri: selectedImage || userProfile.picture }}
+            className="h-36 w-36 rounded-full"
+          />
         </View>
 
-        <View className="flex-row justify-around w-full mb-5">
+        <View className="mb-5 w-full flex-row justify-around">
           {selectedImage ? (
-            <TouchableOpacity onPress={uploadpicture} className="bg-orange-500 p-2 rounded-md">
-              <Text className="text-white font-bold text-lg">Upload Picture</Text>
+            <TouchableOpacity onPress={uploadpicture} className="rounded-md bg-orange-500 p-2">
+              <Text className="text-lg font-bold text-white">Upload Picture</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={pickImage} className="bg-orange-500 p-2 rounded-md">
-              <Text className="text-white font-bold text-lg">Change Picture</Text>
+            <TouchableOpacity onPress={pickImage} className="rounded-md bg-orange-500 p-2">
+              <Text className="text-lg font-bold text-white">Change Picture</Text>
             </TouchableOpacity>
           )}
 
           {isEditing ? (
-            <TouchableOpacity onPress={handleUpdateProfile} className="bg-orange-500 p-2 rounded-md">
-              <Text className="text-white font-bold text-lg">Save Profile</Text>
+            <TouchableOpacity
+              onPress={handleUpdateProfile}
+              className="rounded-md bg-orange-500 p-2">
+              <Text className="text-lg font-bold text-white">Save Profile</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => setIsEditing(true)} className="bg-orange-500 p-2 rounded-md">
-              <Text className="text-white font-bold text-lg">Edit Profile</Text>
+            <TouchableOpacity
+              onPress={() => setIsEditing(true)}
+              className="rounded-md bg-orange-500 p-2">
+              <Text className="text-lg font-bold text-white">Edit Profile</Text>
             </TouchableOpacity>
           )}
         </View>
       </View>
 
       <View className="p-2">
-        <Text className="text-black font-bold text-lg">Name:</Text>
+        <Text className="text-lg font-bold text-black">Name:</Text>
         <TextInput
-          className="w-full p-2 border border-gray-300 rounded-md mb-2"
+          className="mb-2 w-full rounded-md border border-gray-300 p-2"
           value={userProfile.name}
           onChangeText={(text) => setUserProfile({ ...userProfile, name: text })}
           editable={isEditing}
@@ -150,10 +153,10 @@ const ProfileScreen = () => {
       </View>
 
       <View className="p-2">
-        <Text className="text-black font-bold text-lg">Email:</Text>
+        <Text className="text-lg font-bold text-black">Email:</Text>
         <TextInput
-          className="w-full p-2 border border-gray-300 rounded-md mb-2"
-          value={userProfile.email}  
+          className="mb-2 w-full rounded-md border border-gray-300 p-2"
+          value={userProfile.email}
           onChangeText={(text) => setUserProfile({ ...userProfile, email: text })}
           editable={isEditing}
         />

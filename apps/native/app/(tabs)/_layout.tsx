@@ -20,49 +20,32 @@ export default function TabLayout() {
             name="index"
             options={{
               tabBarIcon: ({ color }) => <FontAwesome name="home" size={30} color={color} />,
-              tabBarLabel: ({ focused }) => (
-                <Text
-                  className={`text-sm ${focused ? 'font-bold text-[#F39C12]' : 'text-gray-500'}`}
-                />
-              ),
             }}
           />
           <Tabs.Screen
             name="lesson"
             options={{
               tabBarIcon: ({ color }) => <FontAwesome name="book" size={30} color={color} />,
-              tabBarLabel: ({ focused }) => (
-                <Text
-                  className={`text-sm ${focused ? 'font-bold text-[#F39C12]' : 'text-gray-500'}`}
-                />
-              ),
             }}
           />
           <Tabs.Screen
             name="rank"
             options={{
               tabBarIcon: ({ color }) => <FontAwesome name="trophy" size={30} color={color} />,
-              tabBarLabel: ({ focused }) => (
-                <Text
-                  className={`text-sm ${focused ? 'font-bold text-[#F39C12]' : 'text-gray-500'}`}
-                />
-              ),
             }}
           />
-          {/* Uncomment and add icon name when needed */}
-          {/* <Tabs.Screen
-          name="profile"
-          options={{
-            tabBarIcon: ({ color }) => (
-              <FontAwesome name="user" size={24} color={color} />
-            ),
-            tabBarLabel: ({ focused }) => (
-              <Text className={`text-sm ${focused ? 'text-[#F39C12] font-bold' : 'text-gray-500'}`}>
-                Profile
-              </Text>
-            ),
-          }}
-        /> */}
+          <Tabs.Screen
+            name="flashcards"
+            options={{
+              tabBarIcon: ({ color }) => <FontAwesome name="clone" size={30} color={color} />,
+            }}
+          />
+           <Tabs.Screen
+            name="videos"
+            options={{
+              tabBarIcon: ({ color }) => <FontAwesome name="video-camera" size={30} color={color} />,
+            }}
+          />
         </Tabs>
       </View>
     </SafeAreaView>
