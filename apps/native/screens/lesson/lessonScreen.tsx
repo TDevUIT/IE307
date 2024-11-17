@@ -2,6 +2,7 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+
 import { useCourseContext } from '~/context/CourseContext';
 
 interface JLPTLessonProps {
@@ -23,17 +24,16 @@ const JLPTLesson: React.FC<JLPTLessonProps> = ({ lesson }) => {
 };
 interface JLPTSectionProps {
   title: string;
-  levels: { level: number; name: string; lesson: string[] }[]; 
+  levels: { level: number; name: string; lesson: string[] }[];
 }
 
 const JLPTSection: React.FC<JLPTSectionProps> = ({ title, levels }) => {
   const [expanded, setExpanded] = useState(false);
-  const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({}); // Track expanded sections
-
+  const [expandedItems, setExpandedItems] = useState<{ [key: number]: boolean }>({});
   const toggleItem = (index: number) => {
     setExpandedItems((prev) => ({
       ...prev,
-      [index]: !prev[index], 
+      [index]: !prev[index],
     }));
   };
 
@@ -87,7 +87,7 @@ const JLPTSection: React.FC<JLPTSectionProps> = ({ title, levels }) => {
 
 const JLPTScreen = () => {
   const { courses, lessons, loading, error } = useCourseContext();
-  
+
   if (loading) {
     return <Text>Loading...</Text>;
   }

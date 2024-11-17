@@ -1,14 +1,15 @@
+import { Href, useRouter } from 'expo-router';
 import * as React from 'react';
 import { SafeAreaView, View, Image, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+
 import { useAuth } from '~/context/AuthContext';
 import { images } from '~/utils/icon';
 
 const Header = () => {
-  const { profile } = useAuth();
-  const router = useRouter(); 
+  const { } = useAuth();
+  const router = useRouter();
   const handleNavigation = (url: string) => {
-    router.push(url); 
+    router.push(url as Href);
   };
 
   return (
@@ -18,7 +19,7 @@ const Header = () => {
         <View className="absolute left-1/2 top-1/2 h-8 w-[390px] -translate-x-1/2 transform flex-row items-center justify-between">
           <View className="flex w-full flex-row items-center justify-between gap-x-4">
             <View />
-            <View className="flex-row items-center justify-between gap-x-4 mr-10">
+            <View className="mr-2 flex-row items-center justify-between gap-x-4">
               <TouchableOpacity onPress={() => handleNavigation('/fire')}>
                 <Image
                   source={images.local_fire}
