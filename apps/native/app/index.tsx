@@ -14,7 +14,7 @@ const Page = () => {
       </View>
     );
   }
-  return <Redirect href={isLogged ? '/(tabs)/' :  ('/(auth)/welcome' as Href)} />; 
+  return <Redirect href={isLogged ? '/(tabs)/' : ('/(auth)/welcome' as Href)} />;
 };
 
 export default Page;

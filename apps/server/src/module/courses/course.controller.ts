@@ -58,6 +58,7 @@ export class CourseController {
 
   @Get(':id')
   async getCourseDetails(@Param('id') id: string): Promise<Course> {
+    console.log("running")
     return this.courseService.getCourseDetails(id);
   }
 

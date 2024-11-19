@@ -2,13 +2,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { SafeAreaView, Text, View } from 'react-native';
 
-import Header from '~/components/Header';
-
 export default function TabLayout() {
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-1">
-        <Header />
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: '#F39C12',
@@ -28,22 +25,24 @@ export default function TabLayout() {
               tabBarIcon: ({ color }) => <FontAwesome name="book" size={30} color={color} />,
             }}
           />
-          <Tabs.Screen
+          {/* <Tabs.Screen
             name="rank"
             options={{
               tabBarIcon: ({ color }) => <FontAwesome name="trophy" size={30} color={color} />,
             }}
-          />
-          <Tabs.Screen
+          /> */}
+          {/* <Tabs.Screen
             name="flashcards"
             options={{
               tabBarIcon: ({ color }) => <FontAwesome name="clone" size={30} color={color} />,
             }}
-          />
-           <Tabs.Screen
+          /> */}
+          <Tabs.Screen
             name="videos"
             options={{
-              tabBarIcon: ({ color }) => <FontAwesome name="video-camera" size={30} color={color} />,
+              tabBarIcon: ({ color }) => (
+                <FontAwesome name="video-camera" size={30} color={color} />
+              ),
             }}
           />
         </Tabs>

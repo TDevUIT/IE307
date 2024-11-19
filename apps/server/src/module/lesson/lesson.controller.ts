@@ -25,9 +25,9 @@ export class LessonController {
   }
 
   @Post('bulk')
-async createLessonsBulk(@Body() createLessonsDto: CreateLessonDto[]) {
-  return this.lessonService.createLessonsBulk(createLessonsDto);
-}
+  async createLessonsBulk(@Body() createLessonsDto: CreateLessonDto[]) {
+    return this.lessonService.createLessonsBulk(createLessonsDto);
+  }
 
 
   @UseGuards(JWTGuard)

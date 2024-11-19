@@ -45,14 +45,19 @@ export class CourseService {
       where: { id },
       include: {
         lessons: true,
-        createdBy: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
       },
     });
 
     if (!course) {
       throw new NotFoundException(`Course with ID ${id} not found`);
     }
-
+    console.log(course);
     return course;
   }
 

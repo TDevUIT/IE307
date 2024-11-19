@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 import axiosInstance from '~/helper/axios';
+
 interface Lesson {
   id: string;
   title: string;
@@ -30,7 +31,7 @@ interface CourseContextType {
 
 const CourseContext = createContext<CourseContextType | undefined>(undefined);
 
-export const useCourseContext = () => {
+export const useCourseContext = (): CourseContextType => {
   const context = useContext(CourseContext);
   if (!context) {
     throw new Error('useCourseContext must be used within a CourseProvider');
@@ -44,57 +45,62 @@ export const CourseProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const getCourses = async () => {
+  const fetchCourses = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const response = await axiosInstance.get('/courses/all');
-      setCourses(response.data);
-      await AsyncStorage.setItem('courses', JSON.stringify(response.data));
-      setLoading(false);
-      response.data.forEach((course: Course) => {
-        getLessonsByCourseId(course.id);
+      const response = await axiosInstance.get('/course/all');
+      console.log('hello world!');
+      const courseData = response.data;
+      setCourses(courseData);
+      await AsyncStorage.setItem('courses', JSON.stringify(courseData));
+      courseData.forEach((course: Course) => {
+        fetchLessonsByCourseId(course.id);
       });
-    } catch (err) {
+    } catch {
       setError('Failed to fetch courses');
+    } finally {
       setLoading(false);
     }
-  };
-
-  const getLessonsByCourseId = async (courseId: string) => {
-    try {
-      const response = await axiosInstance.get(`/${courseId}/lessons`);
-      setLessons((prev) => ({ ...prev, [courseId]: response.data }));
-      await AsyncStorage.setItem(`lessons_${courseId}`, JSON.stringify(response.data));
-    } catch (err) {
-      setError('Failed to fetch lessons');
-    }
-  };
-
-  useEffect(() => {
-    const loadCoursesFromStorage = async () => {
-      const storedCourses = await AsyncStorage.getItem('courses');
-      if (storedCourses) {
-        setCourses(JSON.parse(storedCourses));
-        const storedLessonsPromises = JSON.parse(storedCourses).map((course: Course) =>
-          AsyncStorage.getItem(`lessons_${course.id}`).then((lessonsData) => {
-            if (lessonsData) {
-              setLessons((prev) => ({ ...prev, [course.id]: JSON.parse(lessonsData) }));
-            } else {
-              getLessonsByCourseId(course.id);
-            }
-          })
-        );
-        await Promise.all(storedLessonsPromises);
-      } else {
-        getCourses();
-      }
-      setLoading(false);
-    };
-
-    loadCoursesFromStorage();
   }, []);
 
+  const fetchLessonsByCourseId = useCallback(async (courseId: string) => {
+    try {
+      const response = await axiosInstance.get(`/${courseId}/lessons`);
+      const lessonData = response.data;
+      setLessons((prev) => ({ ...prev, [courseId]: lessonData }));
+      await AsyncStorage.setItem(`lessons_${courseId}`, JSON.stringify(lessonData));
+    } catch {
+      setError(`Failed to fetch lessons for course ${courseId}`);
+    }
+  }, []);
+
+  const loadCoursesFromStorage = useCallback(async () => {
+    const storedCourses = await AsyncStorage.getItem('courses');
+    if (storedCourses) {
+      const parsedCourses: Course[] = JSON.parse(storedCourses);
+      setCourses(parsedCourses);
+      const lessonPromises = parsedCourses.map(async (course: Course) => {
+        const lessonsData = await AsyncStorage.getItem(`lessons_${course.id}`);
+        if (lessonsData) {
+          setLessons((prev) => ({ ...prev, [course.id]: JSON.parse(lessonsData) }));
+        } else {
+          await fetchLessonsByCourseId(course.id);
+        }
+      });
+      await Promise.all(lessonPromises);
+    } else {
+      fetchCourses();
+    }
+  }, [fetchCourses, fetchLessonsByCourseId]);
+
+  useEffect(() => {
+    loadCoursesFromStorage();
+  }, [loadCoursesFromStorage]);
+
   return (
-    <CourseContext.Provider value={{ courses, lessons, loading, error, getLessonsByCourseId }}>
+    <CourseContext.Provider
+      value={{ courses, lessons, loading, error, getLessonsByCourseId: fetchLessonsByCourseId }}>
       {children}
     </CourseContext.Provider>
   );
