@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import { SERVER_URL } from '~/config/env';
 import { getAccessToken, getRefreshToken, storeTokens } from '~/utils/store';
 
