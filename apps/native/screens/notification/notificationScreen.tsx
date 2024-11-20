@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, Alert, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import axiosInstance from '~/helper/axios';
+import NotificationItem from '~/components/NotificationItem';
 
 interface Notification {
   id: number;
@@ -14,34 +16,24 @@ interface Notification {
 
 const NotificationScreen = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const IPv4 = Constants.expoConfig?.extra?.EXPO_PUBLIC_SERVER_URL;
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchNotifications = async () => {
+      setLoading(true);
       try {
         const token = await AsyncStorage.getItem('access_token');
-        const response = await axios.get(`${IPv4}/notifications`, {
+        if (!token) throw new Error('User not authenticated');
+        
+        const response = await axiosInstance.get(`/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setNotifications(response.data as Notification[]);
       } catch (error) {
         console.error('Error fetching notifications:', error);
-        setNotifications([
-          {
-            id: 1,
-            title: 'Welcome to the App!',
-            message: 'Thank you for signing up!',
-            timestamp: '2024-11-15 10:30:00',
-            isRead: false,
-          },
-          {
-            id: 2,
-            title: 'System Update',
-            message: 'Your profile picture has been updated successfully.',
-            timestamp: '2024-11-14 08:15:00',
-            isRead: true,
-          },
-        ]);
+        Alert.alert('Failed to fetch notifications. Please try again later.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,11 +43,13 @@ const NotificationScreen = () => {
   const markAsRead = async (id: number) => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      await axios.put(`${IPv4}/notifications/${id}`, {}, {
+      if (!token) throw new Error('User not authenticated');
+
+      await axiosInstance.put(`/notifications/${id}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications((prevNotifications) =>
-        prevNotifications.map((notif) =>
+        prevNotifications.map((notif) =>  
           notif.id === id ? { ...notif, isRead: true } : notif
         )
       );
@@ -67,19 +61,16 @@ const NotificationScreen = () => {
   };
 
   const renderNotification = ({ item }: { item: Notification }) => (
-    <TouchableOpacity
-      onPress={() => {
-        if (!item.isRead) markAsRead(item.id);
-      }}
-      className={`p-4 mb-2 rounded-lg border ${
-        item.isRead ? 'bg-red-100' : 'bg-white'
-      } border-gray-300`}
-    >
-      <Text className="font-bold text-lg">{item.title}</Text>
-      <Text className="my-1">{item.message}</Text>
-      <Text className="text-xs text-gray-500">{item.timestamp}</Text>
-    </TouchableOpacity>
+    <NotificationItem notification={item} onMarkAsRead={markAsRead} />
   );
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-[#f1aa6a]">
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 p-4 bg-[#f1aa6a]">

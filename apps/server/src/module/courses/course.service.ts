@@ -9,6 +9,7 @@ export class CourseService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getCourses(): Promise<Course[]> {
+    console.log("Get Courses");
     return await this.prisma.course.findMany({
       select: {
         id: true,
