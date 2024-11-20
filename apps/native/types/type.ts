@@ -64,7 +64,7 @@ export interface Course {
 export interface Lesson {
   id: number;
   title: string;
-  content: string;  // URL to video
+  content: string;
   courseId: number;
   createdAt: Date;
   updatedAt: Date;
@@ -80,51 +80,40 @@ export interface Lesson {
 
 export interface FlashCard {
   id: number;
-  term: string; // Japanese term
-  definition: string; // Vietnamese meaning
-  kanji: string; // Kanji characters
+  term: string;
+  definition: string;
+  kanji: string;
   lessonId: number;
   createdAt: Date;
   updatedAt: Date;
-  
-  // Relations
-  lesson: Lesson;
 }
 
 export interface Vocabulary {
   id: number;
-  wordJP: string; // Japanese word
-  wordVN: string; // Vietnamese meaning
-  kanji: string; // Kanji characters
+  wordJP: string;
+  wordVN: string;
+  kanji: string;
   lessonId: number;
   createdAt: Date;
   updatedAt: Date;
-  
-  // Relations
-  lesson: Lesson;
-  statuses?: VocabularyStatus[];
 }
 
 export interface Grammar {
   id: number;
   rule: string;
-  description: string; // Explanation of the rule
+  description: string;
   lessonId: number;
   createdAt: Date;
   updatedAt: Date;
-  lesson: Lesson;
 }
 
 export interface MiniTest {
   id: number;
-  question: string; // Test question
-  answer: string; // Correct answer
+  question: string;
+  answer: string;
   lessonId: number;
   createdAt: Date;
   updatedAt: Date;
-  
-  // Relations
-  lesson: Lesson;
 }
 
 export interface LessonStatus {
@@ -136,8 +125,6 @@ export interface LessonStatus {
   createdAt: Date;
   updatedAt: Date;
   
-  user: User;
-  lesson: Lesson;
 }
 
 export interface CourseStatus {
