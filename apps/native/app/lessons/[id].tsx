@@ -184,42 +184,62 @@ export default function LessonDetailsScreen() {
   }
 
   const { flashCards, grammars, vocabularies, miniTests } = lessonDetails;
-
-  const handleRouter = (
-    title: string,
-    routePrefix: string,
-    data: FlashCard[] | Grammar[] | Vocabulary[] | MiniTest[]
-  ) => {
+  const FlashCards: FlashCard[] = flashCards;
+  const Grammars: Grammar[] = grammars;
+  const Vocabularies: Vocabulary[] = vocabularies;
+  const MiniTests: MiniTest[] = miniTests;
+  const handleFlashcardsRouter = () => {
     router.push({
-      pathname: `/${routePrefix}`,
-      params: { title, data: JSON.stringify(data) },
+      pathname: '/flashcards',
+      params: { title: 'Flashcards', data: JSON.stringify(FlashCards) },
+    });
+  };
+
+  const handleGrammarsRouter = () => {
+    router.push({
+      pathname: '/grammars',
+      params: { title: 'Grammars', data: JSON.stringify(Grammars) },
+    });
+  };
+
+  const handleVocabulariesRouter = () => {
+    router.push({
+      pathname: '/vocabularies',
+      params: { title: 'Vocabularies', data: JSON.stringify(Vocabularies) },
+    });
+  };
+
+  const handleMiniTestsRouter = () => {
+    router.push({
+      pathname: '/miniTests',
+      params: { title: 'Mini Tests', data: JSON.stringify(MiniTests) },
     });
   };
 
   const sections = [
     {
       title: 'Flashcards',
-      data: flashCards,
+      dataCount: flashCards.length,
       icon: 'collections-bookmark' as const,
-      routePrefix: 'flashcards',
+      onPress: handleFlashcardsRouter,
     },
     {
       title: 'Grammars',
-      data: grammars,
+      dataCount: grammars.length,
       icon: 'text-fields' as const,
-      routePrefix: 'grammars',
+      onPress: handleGrammarsRouter,
     },
     {
       title: 'Vocabularies',
-      data: vocabularies,
+      dataCount: vocabularies.length,
       icon: 'translate' as const,
-      routePrefix: 'vocabularies',
+      onPress: handleVocabulariesRouter,
     },
     {
       title: 'Mini Tests',
-      data: miniTests,
+      dataCount: miniTests.length,
       icon: 'quiz' as const,
-      routePrefix: 'miniTests',
+      onPress: handleMiniTestsRouter,
     },
   ];
 
@@ -229,9 +249,9 @@ export default function LessonDetailsScreen() {
         <LessonDetailsSection
           key={section.title}
           title={section.title}
-          dataCount={section.data.length}
+          dataCount={section.dataCount}
           icon={section.icon}
-          onPress={() => handleRouter(section.title, section.routePrefix, section.data)}
+          onPress={section.onPress}
         />
       ))}
     </ScrollView>

@@ -1,43 +1,33 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { useState, useEffect } from 'react';
+import {
+  Alert,
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 
-interface UserProfile {
-  id: number;
-  name: string;
-  email: string;
-  picture: string;
-}
+import { useAuth } from '~/context/AuthContext';
+import axiosInstance from '~/helper/axios';
+import { User } from '~/types/type';
 
 const ProfileScreen = () => {
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const { profile, setProfile } = useAuth();
+  const [userProfile, setUserProfile] = useState<User | null>(profile || null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const IPv4 = Constants.expoConfig?.extra?.EXPO_PUBLIC_SERVER_URL;
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const token = await AsyncStorage.getItem('access_token');
-        const response = await axios.get(`${IPv4}/auth/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUserProfile(response.data as UserProfile);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        setUserProfile({
-          id: 0,
-          name: 'Default User',
-          email: 'default@example.com',
-          picture: 'https://via.placeholder.com/150',
-        });
-      }
-    };
-    fetchProfile();
-  }, []);
+    if (profile) {
+      setUserProfile(profile);
+      setLoading(false);
+    }
+  }, [profile]);
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -57,27 +47,32 @@ const ProfileScreen = () => {
     }
   };
 
-  const uploadpicture = async () => {
+  const uploadPicture = async () => {
     if (!selectedImage || !userProfile) return;
 
-    const formData = new FormData();
-    formData.append('file', {
-      uri: selectedImage,
-      name: 'picture.jpg',
-      type: 'image/jpeg',
-    } as any);
-
     try {
-      const token = await AsyncStorage.getItem('access_token');
-      const response = await axios.post(`${IPv4}/user/${userProfile.id}/picture`, formData, {
+      const response = await fetch(selectedImage);
+      const blob = await response.blob();
+
+      const formData = new FormData();
+      formData.append('file', blob, 'picture.jpg');
+
+      const responseData = await axiosInstance.post(`/user/${userProfile.id}/picture`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
         },
       });
+
+      const data = responseData.data as { secure_url: string };
       Alert.alert('Picture updated successfully!');
-      const data = response.data as { secure_url: string };
-      setUserProfile({ ...userProfile, picture: data.secure_url });
+
+      setUserProfile((prevProfile: User | null) => {
+        if (!prevProfile) return prevProfile;
+        return {
+          ...prevProfile,
+          picture: data.secure_url,
+        };
+      });
       setSelectedImage(null);
     } catch (error) {
       const errorMessage = (error as Error).message;
@@ -89,10 +84,7 @@ const ProfileScreen = () => {
     if (!userProfile) return;
 
     try {
-      const token = await AsyncStorage.getItem('access_token');
-      await axios.put(`${IPv4}/user/${userProfile.id}/profile`, userProfile, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosInstance.put(`/user/${userProfile.id}/profile`, userProfile);
       Alert.alert('Profile updated successfully!');
       setIsEditing(false);
     } catch (error) {
@@ -101,42 +93,55 @@ const ProfileScreen = () => {
     }
   };
 
-  if (!userProfile) {
-    return <Text>Loading profile...</Text>;
+  useEffect(() => {
+    if (profile) {
+      setUserProfile(profile);
+      setLoading(false);
+    }
+  }, [profile]);
+
+  if (loading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#F17F2D" />
+        <Text className="mt-4 text-lg text-orange-500">Loading your profile...</Text>
+      </View>
+    );
   }
 
   return (
-    <ScrollView className="flex-1 bg-white p-1 pt-2">
+    <ScrollView className="flex-1 bg-white p-4">
       <View className="mb-5 items-center">
-        <View className="mb-5 rounded-full border-2 border-orange-500">
+        <View className="mb-5 overflow-hidden rounded-full border-4 border-orange-500">
           <Image
-            source={{ uri: selectedImage || userProfile.picture }}
+            source={{ uri: selectedImage || userProfile?.picture || '' }}
             className="h-36 w-36 rounded-full"
+            resizeMode="cover"
           />
         </View>
 
         <View className="mb-5 w-full flex-row justify-around">
           {selectedImage ? (
-            <TouchableOpacity onPress={uploadpicture} className="rounded-md bg-orange-500 p-2">
-              <Text className="text-lg font-bold text-white">Upload Picture</Text>
+            <TouchableOpacity onPress={uploadPicture} className="w-32 rounded-md bg-orange-500 p-2">
+              <Text className="text-center text-lg font-bold text-white">Upload Picture</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={pickImage} className="rounded-md bg-orange-500 p-2">
-              <Text className="text-lg font-bold text-white">Change Picture</Text>
+            <TouchableOpacity onPress={pickImage} className="w-32 rounded-md bg-orange-500 p-2">
+              <Text className="text-center text-lg font-bold text-white">Change Picture</Text>
             </TouchableOpacity>
           )}
 
           {isEditing ? (
             <TouchableOpacity
               onPress={handleUpdateProfile}
-              className="rounded-md bg-orange-500 p-2">
-              <Text className="text-lg font-bold text-white">Save Profile</Text>
+              className="w-32 rounded-md bg-orange-500 p-2">
+              <Text className="text-center text-lg font-bold text-white">Save Profile</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => setIsEditing(true)}
-              className="rounded-md bg-orange-500 p-2">
-              <Text className="text-lg font-bold text-white">Edit Profile</Text>
+              className="w-32 rounded-md bg-orange-500 p-2">
+              <Text className="text-center text-lg font-bold text-white">Edit Profile</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -146,8 +151,8 @@ const ProfileScreen = () => {
         <Text className="text-lg font-bold text-black">Name:</Text>
         <TextInput
           className="mb-2 w-full rounded-md border border-gray-300 p-2"
-          value={userProfile.name}
-          onChangeText={(text) => setUserProfile({ ...userProfile, name: text })}
+          value={userProfile?.name || ''}
+          onChangeText={(text) => setUserProfile((prev) => (prev ? { ...prev, name: text } : prev))}
           editable={isEditing}
         />
       </View>
@@ -156,8 +161,10 @@ const ProfileScreen = () => {
         <Text className="text-lg font-bold text-black">Email:</Text>
         <TextInput
           className="mb-2 w-full rounded-md border border-gray-300 p-2"
-          value={userProfile.email}
-          onChangeText={(text) => setUserProfile({ ...userProfile, email: text })}
+          value={userProfile?.email || ''}
+          onChangeText={(text) =>
+            setUserProfile((prev) => (prev ? { ...prev, email: text } : prev))
+          }
           editable={isEditing}
         />
       </View>

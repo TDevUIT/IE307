@@ -69,6 +69,16 @@ export default function RootLayout() {
             };
           }}
         />
+        <Stack.Screen
+          name="(routes)/profile"
+          options={() => {
+            return {
+              headerShown: true,
+              title: `Profile`,
+              headerStyle: { backgroundColor: '#f7c6a3' },
+            };
+          }}
+        />
         <Stack.Screen name="(routes)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
       </Stack>
