@@ -13,6 +13,7 @@ import { VocabularyModule } from './module/vocabulary/vocabulary.module';
 import { GrammarModule } from './module/grammar/grammar.module';
 import { MinitestModule } from './module/minitest/minitest.module';
 import { FlashcardModule } from './module/flashcard/flashcard.module';
+import { ConversationModule } from './module/conversation/conversation.module';
 @Module({
   imports: [
     PrismaModule,
@@ -31,6 +32,7 @@ import { FlashcardModule } from './module/flashcard/flashcard.module';
     GrammarModule,
     MinitestModule,
     FlashcardModule,
+    ConversationModule,
   ],
   controllers: [],
   providers: [],

@@ -25,6 +25,17 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
+          name="conversation/[id]"
+          options={({ route }) => {
+            const { conversationTitle } = route.params as { conversationTitle: string };
+            return {
+              headerShown: true,
+              title: `${conversationTitle}`,
+              headerStyle: { backgroundColor: '#f7c6a3' },
+            };
+          }}
+        />
+        <Stack.Screen
           name="flashcards/index"
           options={({ route }) => {
             const { title } = route.params as { title: string };
