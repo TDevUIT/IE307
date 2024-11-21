@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { Link, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -57,29 +58,53 @@ const LessonScreen = () => {
   const renderLesson = ({ item }: { item: Lesson }) => (
     <Pressable
       onPress={() => handleRouter(item.id, item.title)}
-      className="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+      className="mb-4 rounded-lg p-4"
       style={{
-        backgroundColor: '#FDFCFB',
+        backgroundColor: '#F9F9F9',
         shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
-      }}>
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 4,
+        borderColor: '#E6E6E6',
+        borderWidth: 1,
+      }}
+      android_ripple={{ color: '#F2F2F2', borderless: false }}>
       <View className="flex-row items-center">
         {item.thumbnail ? (
           <Image
             source={{ uri: item.thumbnail }}
-            className="mr-4 h-16 w-16 rounded"
-            style={{ resizeMode: 'cover' }}
+            className="mr-4 h-16 w-16 rounded-md"
+            style={{
+              resizeMode: 'cover',
+              borderColor: '#FFD9A0',
+              borderWidth: 0.5,
+            }}
           />
         ) : (
-          <View className="mr-4 flex h-16 w-16 items-center justify-center rounded bg-gray-200">
-            <MaterialIcons name="image" size={32} color="#CCCCCC" />
+          <View className="mr-4 flex h-16 w-16 items-center justify-center rounded-md bg-gray-100">
+            <MaterialIcons name="image" size={28} color="#FFC89B" />
+            <Text className="mt-1 text-xs text-gray-500">No Image</Text>
           </View>
         )}
-        <View>
-          <Text className="mb-1 text-lg font-bold text-gray-800">{item.title}</Text>
-          <Text className="text-sm text-gray-600">{item.content}</Text>
+        <View style={{ flex: 1 }}>
+          <Text
+            className="mb-1 text-base font-semibold"
+            style={{
+              color: '#333',
+              flexShrink: 1,
+            }}>
+            {item.title}
+          </Text>
+          <Text
+            className="text-sm"
+            style={{
+              color: '#666',
+              lineHeight: 18,
+              flexShrink: 1,
+            }}
+            numberOfLines={2}>
+            {item.content}
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -94,17 +119,25 @@ const LessonScreen = () => {
       ) : (
         <>
           <View className="flex flex-row items-center justify-between py-2">
-            <Text className="mr-4 text-3xl font-bold text-gray-800">{lessonTitle}</Text>
+            <View className="mr-4 flex-1">
+              <Text
+                className="text-3xl font-bold text-gray-800"
+                numberOfLines={2}
+                ellipsizeMode="tail">
+                {lessonTitle}
+              </Text>
+            </View>
             <TouchableOpacity
-              className="rounded-full bg-gray-200 p-2"
+              className="mb-1"
               onPress={() => {
                 router.push({
                   pathname: '/cources',
                 });
               }}>
-              <MaterialIcons name="settings" size={24} color="gray" />
+              <EvilIcons name="navicon" size={28} color="black" />
             </TouchableOpacity>
           </View>
+
           <FlatList
             data={lessons}
             keyExtractor={(item) => item.id}
