@@ -38,11 +38,9 @@ export default function TabLayout() {
             }}
           /> */}
           <Tabs.Screen
-            name="videos"
+            name="conversation"
             options={{
-              tabBarIcon: ({ color }) => (
-                <FontAwesome name="video-camera" size={30} color={color} />
-              ),
+              tabBarIcon: ({ color }) => <FontAwesome name="comments" size={30} color={color} />,
             }}
           />
         </Tabs>

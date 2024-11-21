@@ -38,7 +38,6 @@ enum NOTIFICATION_TYPE {
   PROGRESS_MILESTONE
 }
 
-// Models
 model User {
   id                 String              @id @default(uuid())
   name               String
@@ -61,6 +60,26 @@ model User {
   courseStatuses     CourseStatus[]
   vocabularyStatuses VocabularyStatus[]
   notifications      Notification[]
+}
+model Conversation {
+  id                    String              @id @default(uuid())
+  title                 String              
+  description           String              
+  defaultFirstMessage   String             
+  timesToMatchTarget    Int                 @default(10) 
+  target                String              
+  jsonContent           String?             
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+}
+
+model ConversationHistory {
+  id                 String              @id @default(uuid())
+  conversationId     String             
+  userId             String              
+  jsonContentTotals  String             
+  isCompleted        Boolean             @default(false)
+  createdAt          DateTime            @default(now())
 }
 
 model Course {
