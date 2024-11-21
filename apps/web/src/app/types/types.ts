@@ -1,3 +1,5 @@
+
+
 // Enum Types
 enum STATUS {
   NOT_STARTED = 'NOT_STARTED',
@@ -62,10 +64,10 @@ export interface Course {
 }
 
 export interface Lesson {
-  id: number;
+  id: string;
   title: string;
   content: string;  // URL to video
-  courseId: number;
+  courseId: string;
   createdAt: Date;
   updatedAt: Date;
   

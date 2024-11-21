@@ -5,7 +5,7 @@ import CourseTable from './_components/CourseTable';
 import CourseModal from './_components/CourseModal';
 import { Course } from '@/app/types/types';
 import axiosInstance from '@/app/helper/axios';
-
+import Swal from 'sweetalert2';
 const CoursesPage: React.FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
@@ -16,6 +16,7 @@ const CoursesPage: React.FC = () => {
       try {
         const response = await axiosInstance.get('/course/all');
         setCourses(response.data.data);
+        console.log('Courses:', response.data.data);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
@@ -43,25 +44,56 @@ const CoursesPage: React.FC = () => {
             course.id === selectedCourse.id ? response.data.data : course
           )
         );
-      } else {
-        const response = await axiosInstance.post('/course', {
-          title: courseData.title,
-          description: courseData.description,
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Course updated successfully!",
+          showConfirmButton: false,
+          timer: 1500,
         });
+      } else {
+        const response = await axiosInstance.post('/course', courseData);
         setCourses((prevCourses) => [...prevCourses, response.data.data]);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Course added successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
       handleCloseModal();
     } catch (error) {
-      console.log('Error saving course:', error);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Failed to save the course.",
+        text: (error as Error)?.message || "An unexpected error occurred.",
+        showConfirmButton: true,
+      });
+      console.error('Error saving course:', error);
     }
   };
+  
 
   const handleDeleteCourse = async (id: string) => {
-    try {
-      await axiosInstance.delete(`/course/${id}`);
-      setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
-    } catch (error) {
-      console.error('Error deleting course:', error);
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this course?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        await axiosInstance.delete(`/course/${id}`);
+        setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
+        Swal.fire('Deleted!', 'The course has been deleted.', 'success');
+      } catch (error) {
+        Swal.fire('Error!', 'Error deleting course: ' + (error as Error)?.message, 'error');
+      }
     }
   };
 

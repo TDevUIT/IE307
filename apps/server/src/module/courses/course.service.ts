@@ -30,6 +30,15 @@ export class CourseService {
     });
   }
 
+  async getAllCoursesNames(): Promise<any[]> {
+    return await this.prisma.course.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+  }
+
   async getCoursesByUserId(userId: string): Promise<Course[]> {
     return await this.prisma.course.findMany({
       where: {
@@ -93,10 +102,6 @@ export class CourseService {
   }
 
   async deleteCourse(id: string): Promise<void> {
-    await this.prisma.lesson.updateMany({
-      where: { courseId: id },
-      data: { courseId: null },
-    });
     await this.prisma.course.delete({
       where: { id },
     });
