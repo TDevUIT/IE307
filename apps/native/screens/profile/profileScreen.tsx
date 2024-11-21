@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
 import {
@@ -31,7 +32,7 @@ const ProfileScreen = () => {
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
+    if (!permissionResult.granted) {
       Alert.alert('Permission to access camera roll is required!');
       return;
     }
@@ -88,21 +89,13 @@ const ProfileScreen = () => {
       Alert.alert('Profile updated successfully!');
       setIsEditing(false);
     } catch (error) {
-      console.error('Failed to update profile:', error);
       Alert.alert('Failed to update profile');
     }
   };
 
-  useEffect(() => {
-    if (profile) {
-      setUserProfile(profile);
-      setLoading(false);
-    }
-  }, [profile]);
-
   if (loading) {
     return (
-      <View className="flex-1 items-center justify-center bg-white">
+      <View className="flex-1 items-center justify-center bg-gray-50">
         <ActivityIndicator size="large" color="#F17F2D" />
         <Text className="mt-4 text-lg text-orange-500">Loading your profile...</Text>
       </View>
@@ -110,63 +103,77 @@ const ProfileScreen = () => {
   }
 
   return (
-    <ScrollView className="flex-1 bg-white p-4">
-      <View className="mb-5 items-center">
-        <View className="mb-5 overflow-hidden rounded-full border-4 border-orange-500">
+    <ScrollView className="flex-1 bg-gray-50 p-6">
+      <View className="items-center">
+        <View className="relative mb-6">
           <Image
             source={{ uri: selectedImage || userProfile?.picture || '' }}
-            className="h-36 w-36 rounded-full"
+            className="h-40 w-40 rounded-full border-4 border-orange-500"
             resizeMode="cover"
+          />
+          <TouchableOpacity
+            onPress={pickImage}
+            className="absolute bottom-0 right-0 h-10 w-10 items-center justify-center rounded-full bg-orange-500">
+            <Ionicons name="camera" size={20} color="white" />
+          </TouchableOpacity>
+        </View>
+
+        <Text className="mb-2 text-xl font-bold text-gray-800">
+          {userProfile?.name || 'Your Name'}
+        </Text>
+        <Text className="mb-4 text-gray-500">{userProfile?.email || 'Your Email'}</Text>
+
+        <TouchableOpacity
+          onPress={isEditing ? handleUpdateProfile : () => setIsEditing(true)}
+          className="mb-4 w-36 rounded-full bg-orange-500 py-2 shadow-lg hover:opacity-90">
+          <Text className="text-center text-lg font-bold text-white">
+            {isEditing ? 'Save Changes' : 'Edit Profile'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View className="space-y-6">
+        <View>
+          <Text className="mb-2 text-lg font-medium text-gray-800">Name</Text>
+          <TextInput
+            style={[
+              {
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: isEditing ? '#F17F2D' : '#D1D5DB',
+                backgroundColor: '#FFFFFF',
+                padding: 12,
+                color: '#374151',
+              },
+              isEditing && { borderColor: '#F17F2D', shadowColor: '#F17F2D' },
+            ]}
+            value={userProfile?.name || ''}
+            onChangeText={(text) =>
+              setUserProfile((prev) => (prev ? { ...prev, name: text } : prev))
+            }
+            editable={isEditing}
+            placeholder="Enter your name"
           />
         </View>
 
-        <View className="mb-5 w-full flex-row justify-around">
-          {selectedImage ? (
-            <TouchableOpacity onPress={uploadPicture} className="w-32 rounded-md bg-orange-500 p-2">
-              <Text className="text-center text-lg font-bold text-white">Upload Picture</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={pickImage} className="w-32 rounded-md bg-orange-500 p-2">
-              <Text className="text-center text-lg font-bold text-white">Change Picture</Text>
-            </TouchableOpacity>
-          )}
-
-          {isEditing ? (
-            <TouchableOpacity
-              onPress={handleUpdateProfile}
-              className="w-32 rounded-md bg-orange-500 p-2">
-              <Text className="text-center text-lg font-bold text-white">Save Profile</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => setIsEditing(true)}
-              className="w-32 rounded-md bg-orange-500 p-2">
-              <Text className="text-center text-lg font-bold text-white">Edit Profile</Text>
-            </TouchableOpacity>
-          )}
+        <View>
+          <Text className="mb-2 text-lg font-medium text-gray-800">Email</Text>
+          <TextInput
+            style={[
+              {
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#D1D5DB',
+                backgroundColor: '#F9FAFB',
+                padding: 12,
+                color: '#9CA3AF',
+              },
+            ]}
+            value={userProfile?.email || ''}
+            editable={false}
+            placeholder="Your email"
+          />
         </View>
-      </View>
-
-      <View className="p-2">
-        <Text className="text-lg font-bold text-black">Name:</Text>
-        <TextInput
-          className="mb-2 w-full rounded-md border border-gray-300 p-2"
-          value={userProfile?.name || ''}
-          onChangeText={(text) => setUserProfile((prev) => (prev ? { ...prev, name: text } : prev))}
-          editable={isEditing}
-        />
-      </View>
-
-      <View className="p-2">
-        <Text className="text-lg font-bold text-black">Email:</Text>
-        <TextInput
-          className="mb-2 w-full rounded-md border border-gray-300 p-2"
-          value={userProfile?.email || ''}
-          onChangeText={(text) =>
-            setUserProfile((prev) => (prev ? { ...prev, email: text } : prev))
-          }
-          editable={isEditing}
-        />
       </View>
     </ScrollView>
   );

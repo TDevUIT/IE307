@@ -62,3 +62,21 @@ export const checkExists = async () => {
   const accessToken = await AsyncStorage.getItem('access_token');
   return !!accessToken;
 };
+
+
+export const setCourseid = async (courseId: string) => {
+  try {
+    await AsyncStorage.setItem('courseid', courseId);
+  } catch (error) {
+    console.error('Error setting courseid', error);
+  }
+}
+export const getCourseid = async () => {
+  try {
+    const courseId = await AsyncStorage.getItem('courseid');
+    return courseId;
+  } catch (error) {
+    console.error('Error getting courseid', error);
+    return null;
+  }
+}

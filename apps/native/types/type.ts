@@ -57,7 +57,7 @@ export interface Course {
   
   // Relations
   lessons?: Lesson[];
-  createdBy: User;
+  createdBy?: User;
   statuses?: CourseStatus[];
 }
 

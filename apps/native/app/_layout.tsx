@@ -1,5 +1,4 @@
 import { AuthProvider } from '~/context/AuthContext';
-import { CourseProvider } from '~/context/CourseContext';
 import '../global.css';
 
 import { Stack } from 'expo-router';
@@ -76,6 +75,14 @@ export default function RootLayout() {
               headerShown: true,
               title: `Profile`,
               headerStyle: { backgroundColor: '#f7c6a3' },
+            };
+          }}
+        />
+        <Stack.Screen
+          name="cources/index"
+          options={() => {
+            return {
+              headerShown: false,
             };
           }}
         />
