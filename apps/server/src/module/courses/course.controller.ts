@@ -36,6 +36,11 @@ export class CourseController {
     return this.courseService.getCourses();
   }
 
+  @Get('all/names')
+  async getAllCoursesNames() {
+    return this.courseService.getAllCoursesNames();
+  }
+
   @UseGuards(JWTGuard)
   @Get('user')
   async getCoursesByUserId(@Req() req: Request): Promise<Course[]> {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.SERVER_URL || 'http://localhost:3001/api/v1',
+  baseURL:  'http://localhost:3001/api/v1',
   timeout: 10000,
   withCredentials: true, // This ensures cookies are sent with requests
   headers: {
