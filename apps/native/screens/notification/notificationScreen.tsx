@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Alert, ActivityIndicator } from 'react-native';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import Constants from 'expo-constants';
-import axiosInstance from '~/helper/axios';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+
 import NotificationItem from '~/components/NotificationItem';
+import axiosInstance from '~/helper/axios';
 
 interface Notification {
   id: number;
@@ -24,7 +25,7 @@ const NotificationScreen = () => {
       try {
         const token = await AsyncStorage.getItem('access_token');
         if (!token) throw new Error('User not authenticated');
-        
+
         const response = await axiosInstance.get(`/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -45,13 +46,15 @@ const NotificationScreen = () => {
       const token = await AsyncStorage.getItem('access_token');
       if (!token) throw new Error('User not authenticated');
 
-      await axiosInstance.put(`/notifications/${id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosInstance.put(
+        `/notifications/${id}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setNotifications((prevNotifications) =>
-        prevNotifications.map((notif) =>  
-          notif.id === id ? { ...notif, isRead: true } : notif
-        )
+        prevNotifications.map((notif) => (notif.id === id ? { ...notif, isRead: true } : notif))
       );
       Alert.alert('Notification marked as read');
     } catch (error) {
@@ -66,15 +69,15 @@ const NotificationScreen = () => {
 
   if (loading) {
     return (
-      <View className="flex-1 justify-center items-center bg-[#f1aa6a]">
+      <View className="flex-1 items-center justify-center bg-[#f1aa6a]">
         <ActivityIndicator size="large" color="#000" />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 p-4 bg-[#f1aa6a]">
-      <Text className="text-2xl font-bold mb-4">Notifications</Text>
+    <View className="flex-1 bg-[#f1aa6a] p-4">
+      <Text className="mb-4 text-2xl font-bold">Notifications</Text>
       <FlatList
         data={notifications}
         renderItem={renderNotification}
