@@ -24,6 +24,11 @@ export class LessonController {
     return this.lessonService.createLesson(createLessonDto);
   }
 
+  @Get('all/names')
+  async getAllLessonsNames() {
+    return this.lessonService.getAllLessonNames();
+  }
+
 
   @UseGuards(JWTGuard)
   @Get()

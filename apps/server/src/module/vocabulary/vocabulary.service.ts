@@ -83,5 +83,14 @@ export class VocabularyService {
       })),
     });
   }
-  
+  async updateVocabulary(vocabularyId: string, vocabularyInput: CreateVocabularyDto) {
+    return await this.prismaService.vocabulary.update({
+      where: { id: vocabularyId },
+      data: {
+        wordJP: vocabularyInput.wordJP,
+        wordVN: vocabularyInput.wordVN,
+        kanji: vocabularyInput.kanji,
+      }
+    });
+  }
 }
