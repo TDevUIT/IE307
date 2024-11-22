@@ -60,6 +60,8 @@ model User {
   courseStatuses     CourseStatus[]
   vocabularyStatuses VocabularyStatus[]
   notifications      Notification[]
+
+  ConversationHistory ConversationHistory[]
 }
 model Conversation {
   id                    String              @id @default(uuid())
@@ -69,17 +71,25 @@ model Conversation {
   timesToMatchTarget    Int                 @default(10) 
   target                String              
   jsonContent           String?             
+  profilePic            String?
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
+
+  ConversationHistory ConversationHistory[]
 }
 
 model ConversationHistory {
-  id                 String              @id @default(uuid())
-  conversationId     String             
-  userId             String              
-  jsonContentTotals  String             
-  isCompleted        Boolean             @default(false)
-  createdAt          DateTime            @default(now())
+  id                 String               @id @default(uuid())
+  conversationId     String
+  userId             String
+  jsonContentTotals  String
+  isCompleted        Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+
+  // Relations
+  conversation       Conversation         @relation(fields: [conversationId], references: [id])
+  user               User                 @relation(fields: [userId], references: [id])
+  @@unique([conversationId, userId])
 }
 
 model Course {
@@ -101,6 +111,7 @@ model Lesson {
   title              String
   content            String              // URL to video
   courseId           String?
+  thumbnail          String?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 
