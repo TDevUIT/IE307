@@ -35,6 +35,11 @@ export class GrammarService {
         where: { id },
         });
     }
+    async clearGrammar(lessonId: string){
+        await this.prismaService.grammar.deleteMany({
+        where: { lessonId },
+        });
+    }
     async updateGrammar(id: string, grammar: UpdateGrammarDto) {
         return await this.prismaService.grammar.update({
         where: { id },
@@ -43,5 +48,14 @@ export class GrammarService {
             description: grammar.description,
         },
         });
+    }
+    async createBulkGrammar(data: Array<CreateGrammarDto>, lessonId: string) {
+      return await this.prismaService.grammar.createMany({
+        data: data.map((grammar) => ({
+          rule: grammar.rule,
+          description: grammar.description,
+          lessonId: lessonId,
+        })),
+      });
     }
 }

@@ -94,11 +94,11 @@ export interface FlashCard {
 }
 
 export interface Vocabulary {
-  id: number;
+  id: string;
   wordJP: string; // Japanese word
   wordVN: string; // Vietnamese meaning
   kanji: string; // Kanji characters
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   

@@ -24,9 +24,9 @@ export class LessonController {
     return this.lessonService.createLesson(createLessonDto);
   }
 
-  @Post('bulk')
-  async createLessonsBulk(@Body() createLessonsDto: CreateLessonDto[]) {
-    return this.lessonService.createLessonsBulk(createLessonsDto);
+  @Get('all/names')
+  async getAllLessonsNames() {
+    return this.lessonService.getAllLessonNames();
   }
 
 
@@ -56,4 +56,14 @@ export class LessonController {
   async deleteLesson(@Param('id') id: string) {
     return this.lessonService.deleteLesson(id);
   }
+@Post(':courseId/bulk')
+@UseGuards(JWTGuard)
+@UseGuards(AdminAuthGuard)
+async createBulkLessons(
+  @Param('courseId') courseId: string,
+  @Body() createLessonsDto: CreateLessonDto[]
+) {
+  return this.lessonService.createBulkLessons(courseId, createLessonsDto);
+}
+
 }

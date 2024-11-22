@@ -36,6 +36,13 @@ export class MinitestService {
       where: { id: minitestId },
     });
   }
+
+  async clearMinitest(lessonId: string){
+    await this.prismaService.miniTest.deleteMany({
+      where: { lessonId },
+    });
+  }
+
   async updateMinitest(minitestId: string, minitest: UpdateMinitestDto) {
     return await this.prismaService.miniTest.update({
       where: { id: minitestId },
@@ -45,4 +52,15 @@ export class MinitestService {
       },
     });
   }
+
+  async createBulkMinitests(data: Array<CreateMinitestDto>, lessonId: string) {
+    return await this.prismaService.miniTest.createMany({
+      data: data.map((minitest) => ({
+        question: minitest.question,
+        answer: minitest.answer,
+        lessonId: lessonId,
+      })),
+    });
+  }
+  
 }

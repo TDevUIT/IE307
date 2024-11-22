@@ -50,4 +50,20 @@ export class MinitestController {
   async deleteMinitest(@Param('minitestId') minitestId: string) {
     return this.minitestService.deleteMinitest(minitestId);
   }
+  @Post('bulk/:lessonId')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
+async createBulkMinitests(
+  @Param('lessonId') lessonId: string,
+  @Body() minitests: Array<CreateMinitestDto>,
+) {
+  return this.minitestService.createBulkMinitests(minitests, lessonId);
+}
+@Delete('clear/:lessonId')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
+  async clearMinitest(@Param('lessonId') lessonId: string) {
+    return this.minitestService.clearMinitest(lessonId);
+  }
+
 }

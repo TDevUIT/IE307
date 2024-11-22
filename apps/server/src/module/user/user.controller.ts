@@ -4,7 +4,8 @@ import { UserService } from './user.service';
 import { ResponseMessage } from 'src/decorator/response-message.decorator';
 import { Request as ExpressRequest } from 'express';
 import { AuthGuard as JWTGuard } from '../../guard/google.guard';
-import { Notification, VocabularyStatus } from '@prisma/client';
+import { Notification, User, VocabularyStatus } from '@prisma/client';
+import { AdminAuthGuard } from '../../guard/admin.guard';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -31,5 +32,12 @@ export class UserController {
       throw new Error('User ID not found');
     }
     return this.userService.getVocabularyStatusesByUserId(userId);
+  }
+  @Get()
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
+  @ResponseMessage('Get all users')
+  async getAllUsers(): Promise<User[]> {
+    return this.userService.getALLUsers();
   }
 }
