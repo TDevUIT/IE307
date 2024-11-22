@@ -35,6 +35,11 @@ export class GrammarService {
         where: { id },
         });
     }
+    async clearGrammar(lessonId: string){
+        await this.prismaService.grammar.deleteMany({
+        where: { lessonId },
+        });
+    }
     async updateGrammar(id: string, grammar: UpdateGrammarDto) {
         return await this.prismaService.grammar.update({
         where: { id },

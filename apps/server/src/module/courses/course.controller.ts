@@ -22,6 +22,8 @@ export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 
   @Post('bulk')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
   async createBulkCourses(
     @Body() createCoursesDto: CreateCourseDto[],
     @Req() req: Request

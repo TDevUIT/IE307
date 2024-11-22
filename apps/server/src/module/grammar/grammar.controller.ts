@@ -47,10 +47,18 @@ export class GrammarController {
     return this.grammarService.deleteGrammar(id);
   }
   @Post('bulk/:lessonId')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
   async createBulkGrammar(
     @Body() grammars: Array<CreateGrammarDto>,
     @Param('lessonId') lessonId: string,
   ) {
     return this.grammarService.createBulkGrammar(grammars, lessonId);
+  }
+  @Delete('clear/:lessonId')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
+  async clearGrammar(@Param('lessonId') lessonId: string) {
+    return this.grammarService.clearGrammar(lessonId);
   }
 }
