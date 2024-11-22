@@ -101,9 +101,22 @@ const CoursesScreen = () => {
                 marginRight: 12,
               }}
             />
-            <View>
-              <Text className="text-lg font-semibold text-gray-800">{item.title}</Text>
-              <Text className="mt-1 text-sm text-gray-500">{item.description}</Text>
+            <View style={{ flex: 1 }}>
+              <Text className="whitespace-nowrap text-lg font-semibold text-gray-800">
+                {item.title}
+              </Text>
+              <Text
+                style={{
+                  color: '#666',
+                  lineHeight: 18,
+                  flexShrink: 1,
+                  flexWrap: 'wrap',
+                  overflow: 'hidden',
+                }}
+                numberOfLines={3}
+                ellipsizeMode="tail">
+                {item.description}
+              </Text>
             </View>
           </Pressable>
         )}
