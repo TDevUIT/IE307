@@ -45,4 +45,15 @@ export class MinitestService {
       },
     });
   }
+
+  async createBulkMinitests(data: Array<CreateMinitestDto>, lessonId: string) {
+    return await this.prismaService.miniTest.createMany({
+      data: data.map((minitest) => ({
+        question: minitest.question,
+        answer: minitest.answer,
+        lessonId: lessonId,
+      })),
+    });
+  }
+  
 }

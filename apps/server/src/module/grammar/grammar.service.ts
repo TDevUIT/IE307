@@ -44,4 +44,13 @@ export class GrammarService {
         },
         });
     }
+    async createBulkGrammar(data: Array<CreateGrammarDto>, lessonId: string) {
+      return await this.prismaService.grammar.createMany({
+        data: data.map((grammar) => ({
+          rule: grammar.rule,
+          description: grammar.description,
+          lessonId: lessonId,
+        })),
+      });
+    }
 }
