@@ -84,5 +84,14 @@ async createBulkVocabulary(
 ) {
   return this.vocabularyService.createBulkVocabulary(vocabularies, lessonId);
 }
+  @Put('/:id')
+    @UseGuards(JWTGuard)
+    async updateVocabulary(
+      @Param('id') vocabularyId: string,
+      @Body() createVocabularyDto: CreateVocabularyDto,
+    ) {
+      return this.vocabularyService.updateVocabulary(vocabularyId, createVocabularyDto);
+    }
+  
 
 }

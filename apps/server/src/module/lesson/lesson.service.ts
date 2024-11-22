@@ -65,6 +65,15 @@ export class LessonService {
     });
   }
 
+  async getAllLessonNames(): Promise<any[]> {
+    return await this.prisma.lesson.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+  }
+
   async updateLesson(id: string, updateLessonDto: UpdateLessonDto) {
     return this.prisma.lesson.update({
       where: { id },
