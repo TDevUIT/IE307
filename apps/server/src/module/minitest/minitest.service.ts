@@ -36,6 +36,13 @@ export class MinitestService {
       where: { id: minitestId },
     });
   }
+
+  async clearMinitest(lessonId: string){
+    await this.prismaService.miniTest.deleteMany({
+      where: { lessonId },
+    });
+  }
+
   async updateMinitest(minitestId: string, minitest: UpdateMinitestDto) {
     return await this.prismaService.miniTest.update({
       where: { id: minitestId },

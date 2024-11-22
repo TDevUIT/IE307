@@ -41,23 +41,6 @@ export class LessonService {
 
     return lesson;
   }
-
-  async createLessonsBulk(createLessonsDto: CreateLessonDto[]) {
-    const lessons = createLessonsDto.map(({ title, content, courseId}) => {
-  
-      return {
-        title,
-        content,
-        courseId,
-      };
-    });
-  
-    const createdLessons = await this.prisma.lesson.createMany({
-      data: lessons,
-    });
-  
-    return createdLessons;
-  }
   
   async getAllLessons() {
     return this.prisma.lesson.findMany({
@@ -94,4 +77,40 @@ export class LessonService {
       where: { id },
     });
   }
+
+  async createBulkLessons(courseId: string, createLessonsDto: CreateLessonDto[]) {
+    return this.prisma.$transaction(
+      createLessonsDto.map((lessonDto) => {
+        const { title, content, vocabularies, grammars, miniTests } = lessonDto;
+  
+        const flashCards =
+          vocabularies?.map((vocab) => ({
+            term: vocab.wordJP,
+            definition: vocab.wordVN,
+            kanji: vocab.kanji,
+          })) || [];
+  
+        return this.prisma.lesson.create({
+          data: {
+            title,
+            content,
+            courseId,
+            flashCards: {
+              create: flashCards,
+            },
+            grammars: {
+              create: grammars,
+            },
+            vocabularies: {
+              create: vocabularies,
+            },
+            miniTests: {
+              create: miniTests,
+            },
+          },
+        });
+      })
+    );
+  }
+  
 }

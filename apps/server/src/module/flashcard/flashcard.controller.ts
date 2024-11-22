@@ -11,6 +11,8 @@ export class FlashcardController {
   constructor(private readonly flashcardService: FlashcardService) {}
 
   @Post('bulk/:lessonId')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
   async createFlashcardsBulk(
     @Param('lessonId') lessonId: string,
     @Body() createFlashcardsDto: CreateFlashcardDto[],
