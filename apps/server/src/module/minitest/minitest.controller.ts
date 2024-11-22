@@ -50,4 +50,12 @@ export class MinitestController {
   async deleteMinitest(@Param('minitestId') minitestId: string) {
     return this.minitestService.deleteMinitest(minitestId);
   }
+  @Post('bulk/:lessonId')
+async createBulkMinitests(
+  @Param('lessonId') lessonId: string,
+  @Body() minitests: Array<CreateMinitestDto>,
+) {
+  return this.minitestService.createBulkMinitests(minitests, lessonId);
+}
+
 }
