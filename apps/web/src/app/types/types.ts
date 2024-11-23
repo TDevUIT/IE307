@@ -118,10 +118,10 @@ export interface Grammar {
 }
 
 export interface MiniTest {
-  id: number;
+  id: string;
   question: string; // Test question
   answer: string; // Correct answer
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   
