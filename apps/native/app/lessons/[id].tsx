@@ -147,8 +147,8 @@ export default function LessonDetailsScreen() {
   useEffect(() => {
     const fetchLessonDetails = async () => {
       try {
-        // const response = await axiosInstance.get(`lessons/${id}`);
-        // setLessonDetails(response.data.data);
+        const response = await axiosInstance.get(`lessons/${id}`);
+        setLessonDetails(response.data.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching lesson details:', error);

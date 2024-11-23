@@ -67,23 +67,39 @@ export class ConversationController {
   }
   @Post('save-answer')
   async saveConversationAnswer(
-    @Body() conversation: ConversationDto,
-    @Body('dialogueFlow') dialogueFlow: any[],
+    @Body()
+    body: {
+      conversationId: string;
+      conversation: ConversationDto;
+      dialogueFlow: any[];
+    },
     @Headers('userId') userId: string,
   ) {
     try {
+      const { conversationId, conversation, dialogueFlow } = body;
+
       if (!conversation || !dialogueFlow || !Array.isArray(dialogueFlow)) {
         throw new HttpException('Invalid input data', HttpStatus.BAD_REQUEST);
       }
+
+      if (!conversationId) {
+        throw new HttpException(
+          'Invalid conversation ID',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const response = await this.conversationService.createAnswer(
         conversation,
         dialogueFlow,
       );
+
       await this.conversationService.saveConversationHistory(
-        conversation.id,
+        conversationId,
         JSON.stringify(response.newDialogueFlow),
         userId,
       );
+
       return response.jsonResponseData;
     } catch (error) {
       console.error('Error saving conversation answer:', error.message);

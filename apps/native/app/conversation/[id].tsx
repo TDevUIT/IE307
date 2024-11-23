@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
 
 import { useAuth } from '~/context/AuthContext';
 import axiosInstance from '~/helper/axios';
+
 interface Conversation {
   id: string;
   title: string;
@@ -34,13 +35,14 @@ interface DialogueFlow {
 
 const ConversationDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [conversationDetails, setConversationDetails] = useState<Conversation | null>(null);
+  const [conversationDetails, setConversationDetails] = useState<Conversation>();
   const [dialogueFlow, setDialogueFlow] = useState<DialogueFlow[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userMessage, setUserMessage] = useState<string>('');
   const [isSending, setIsSending] = useState<boolean>(false);
   const { profile } = useAuth();
-
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [kapiIsTyping, setKapiIsTyping] = useState<boolean>(false);
   useEffect(() => {
     const handleGetConversation = async () => {
       if (id) {
@@ -65,6 +67,12 @@ const ConversationDetails = () => {
     handleGetConversation();
   }, [id]);
 
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }
+  }, [dialogueFlow, loading]);
+
   const handleSendMessage = async () => {
     if (userMessage.trim() !== '' && dialogueFlow) {
       setIsSending(true);
@@ -75,11 +83,12 @@ const ConversationDetails = () => {
       try {
         setDialogueFlow(updatedFlow);
         setUserMessage('');
+        setKapiIsTyping(true);
         const response = await axiosInstance.post(
           `/conversation/save-answer`,
           {
+            conversationId: id,
             conversation: {
-              id: conversationDetails?.id,
               scene: conversationDetails?.title,
               target: conversationDetails?.target,
               description: conversationDetails?.description,
@@ -99,6 +108,7 @@ const ConversationDetails = () => {
         console.error('Error updating dialogue flow', error);
       } finally {
         setIsSending(false);
+        setKapiIsTyping(false);
       }
     }
   };
@@ -123,7 +133,10 @@ const ConversationDetails = () => {
   return (
     <View className="flex-1 bg-white p-4">
       <Text className="mb-6 text-center text-gray-500">{conversationDetails.description}</Text>
-      <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 16 }}>
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingBottom: 16 }}
+        ref={scrollViewRef}>
         {dialogueFlow.map((turn, index) => (
           <View key={index}>
             <View className="mb-4 max-w-[75%] self-start rounded-lg bg-gray-100 p-4">
@@ -144,9 +157,17 @@ const ConversationDetails = () => {
             )}
           </View>
         ))}
+        {kapiIsTyping && (
+          <View className="mb-4 max-w-[75%] self-start rounded-lg bg-gray-100 p-4">
+            <View className="flex flex-row items-center">
+              <FontAwesome5 name="robot" size={24} color="black" />
+              <Text className="ml-2 mt-1 text-lg font-semibold text-blue-600">Kapi</Text>
+            </View>
+            <Text className="mt-2 text-lg italic text-gray-500">Kapi is typing...</Text>
+          </View>
+        )}
       </ScrollView>
 
-      {/* Input Field */}
       <View className="mt-4 flex-row items-center">
         <TextInput
           value={userMessage}
