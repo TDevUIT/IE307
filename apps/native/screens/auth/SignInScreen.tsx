@@ -40,7 +40,7 @@ const SignInScreen: React.FC = () => {
         router.replace('/');
       }
     } catch (error) {
-      setError('Đăng nhập thất bại, vui lòng kiểm tra lại.');
+      setError('Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +61,7 @@ const SignInScreen: React.FC = () => {
           </View>
 
           <View className="flex-row items-center">
-            <Text className="text-3xl font-bold text-black">Xin chào</Text>
+            <Text className="text-3xl font-bold text-black">Welcome Back</Text>
             <MaterialIcons
               name="emoji-people"
               size={30}
@@ -70,16 +70,16 @@ const SignInScreen: React.FC = () => {
             />
           </View>
 
-          <Text className="mb-6 text-lg text-black">
-            Rất vui khi gặp lại bạn! Chúc bạn có một trải nghiệm tuyệt vời.
+          <Text className="mb-6 text-lg text-gray-600">
+            We are glad to see you again! Let's get started.
           </Text>
 
           <Text className="mb-2 text-lg text-black">Email</Text>
-          <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-lg">
+          <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-md">
             <MaterialIcons name="email" size={20} color="rgb(241,139,47)" />
             <TextInput
               className="ml-2 flex-1 text-lg"
-              placeholder="Nhập email của bạn"
+              placeholder="Enter your email"
               keyboardType="email-address"
               autoCapitalize="none"
               value={email}
@@ -87,12 +87,12 @@ const SignInScreen: React.FC = () => {
             />
           </View>
 
-          <Text className="mb-2 text-lg text-black">Mật khẩu</Text>
-          <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-lg">
+          <Text className="mb-2 text-lg text-black">Password</Text>
+          <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-md">
             <MaterialIcons name="lock" size={20} color="rgb(241,139,47)" />
             <TextInput
               className="ml-2 flex-1 text-lg"
-              placeholder="Nhập mật khẩu của bạn"
+              placeholder="Enter your password"
               secureTextEntry={!isPasswordVisible}
               value={password}
               onChangeText={setPassword}
@@ -107,19 +107,11 @@ const SignInScreen: React.FC = () => {
           </View>
 
           <View className="mb-6 flex-row justify-between">
-            <Text className="text-black underline" onPress={() => console.log('Quên mật khẩu')}>
-              Quên mật khẩu?
+            <Text
+              className="text-gray-500 underline"
+              onPress={() => console.log('Forgot Password')}>
+              Forgot Password?
             </Text>
-            <TouchableOpacity
-              className="flex-row items-center"
-              onPress={() => setRememberMe(!rememberMe)}>
-              <MaterialIcons
-                name={rememberMe ? 'check-box' : 'check-box-outline-blank'}
-                size={20}
-                color="rgb(241,139,47)"
-              />
-              <Text className="ml-2 text-black">Ghi nhớ tài khoản</Text>
-            </TouchableOpacity>
           </View>
 
           {error ? <Text className="mb-4 text-center text-red-500">{error}</Text> : null}
@@ -132,16 +124,16 @@ const SignInScreen: React.FC = () => {
             {isLoading ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
-              <Text className="text-lg font-bold text-white">Đăng Nhập</Text>
+              <Text className="text-lg font-bold text-white">Sign In</Text>
             )}
           </TouchableOpacity>
 
-          <Text className="text-center text-black">
-            Chưa có tài khoản?{' '}
+          <Text className="text-center text-gray-600">
+            Don’t have an account?{' '}
             <Text
               className="font-bold text-[rgb(241,139,47)] underline"
               onPress={() => router.replace('/sign-up')}>
-              Đăng Ký
+              Sign Up
             </Text>
           </Text>
         </View>

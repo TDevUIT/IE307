@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Href, Redirect } from 'expo-router';
+import { Href, Redirect, router } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import Loading from '~/components/Loading';
@@ -15,6 +15,7 @@ interface AuthContextProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setProfile: React.Dispatch<React.SetStateAction<User | null>>;
   fetchProfile: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -58,6 +59,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const logout = async () => {
+    try {
+      // await axiosInstance.post('/auth/logout');
+    } catch (error) {
+      console.warn('Logout API call failed:', error);
+    } finally {
+      await removeAccessToken();
+      setIsLogged(false);
+      setProfile(null);
+      router.push('/(auth)/welcome');
+    }
+  };
+
   useEffect(() => {
     const checkAuthAndFetchProfile = async () => {
       try {
@@ -88,7 +102,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <AuthContext.Provider
-      value={{ isLogged, loading, setIsLogged, setLoading, profile, setProfile, fetchProfile }}>
+      value={{
+        isLogged,
+        loading,
+        setIsLogged,
+        setLoading,
+        profile,
+        setProfile,
+        fetchProfile,
+        logout,
+      }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,7 @@ import { FlatList, ActivityIndicator, Pressable, View, Text } from 'react-native
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import axiosInstance from '~/helper/axios';
-import { setCourseid } from '~/utils/store';
+import { setCourseid, setCourseTitleAndDescription } from '~/utils/store';
 
 export interface Course {
   id: string;
@@ -36,8 +36,9 @@ const CoursesScreen = () => {
     fetchCourses();
   }, []);
 
-  const handleSelectedCourse = async (courseId: string) => {
+  const handleSelectedCourse = async (courseId: string, courcesTitle: string, description: string) => {
     await setCourseid(courseId);
+    await setCourseTitleAndDescription(courcesTitle, description);
     router.push('/(tabs)/lesson');
   };
 
@@ -82,7 +83,7 @@ const CoursesScreen = () => {
         contentContainerStyle={{ paddingVertical: 16, paddingHorizontal: 16 }}
         renderItem={({ item }) => (
           <Pressable
-            onPress={() => handleSelectedCourse(item.id)}
+            onPress={() => handleSelectedCourse(item.id, item.title, item.description)}
             className="mb-4 flex-row items-center rounded-lg bg-white p-4 shadow-md"
             style={{
               shadowColor: '#000',

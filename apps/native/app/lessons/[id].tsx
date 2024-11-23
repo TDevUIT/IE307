@@ -241,6 +241,24 @@ export default function LessonDetailsScreen() {
       icon: 'quiz' as const,
       onPress: handleMiniTestsRouter,
     },
+    {
+      title: 'Kanji Practice',
+      dataCount: 20,
+      icon: 'draw' as const,
+      onPress: () => {},
+    },
+    {
+      title: 'Listening Practice',
+      dataCount: 10,
+      icon: 'headphones' as const,
+      onPress: () => {},
+    },
+    {
+      title: 'Cultural Insights',
+      dataCount: 5,
+      icon: 'public' as const,
+      onPress: () => {},
+    },
   ];
 
   return (
@@ -261,13 +279,21 @@ export default function LessonDetailsScreen() {
 interface LessonDetailsSectionProps {
   title: string;
   dataCount: number;
-  icon: 'quiz' | 'collections-bookmark' | 'text-fields' | 'translate';
+  icon:
+    | 'quiz'
+    | 'collections-bookmark'
+    | 'text-fields'
+    | 'translate'
+    | 'quiz'
+    | 'draw'
+    | 'public'
+    | 'headphones';
   onPress: () => void;
 }
 
 const LessonDetailsSection = ({ title, dataCount, icon, onPress }: LessonDetailsSectionProps) => {
   return (
-    <View className="mt-8 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
+    <View className="mb-8 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center">
           <MaterialIcons name={icon} size={28} color="#4F46E5" />

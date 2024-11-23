@@ -71,7 +71,7 @@ const SignUpScreen: React.FC = () => {
           </View>
 
           <View className="flex-row items-center">
-            <Text className="text-3xl font-bold text-[rgb(241,139,47)]">Đăng Ký</Text>
+            <Text className="text-3xl font-bold text-[rgb(241,139,47)]">Sign Up</Text>
             <MaterialIcons
               name="person-add"
               size={30}
@@ -80,15 +80,15 @@ const SignUpScreen: React.FC = () => {
             />
           </View>
           <Text className="mb-6 text-lg text-gray-700">
-            Hãy nhập thông tin của bạn để tạo tài khoản mới.
+            Please enter your details to create a new account.
           </Text>
 
-          <Text className="mb-2 text-lg text-gray-700">Tên</Text>
+          <Text className="mb-2 text-lg text-gray-700">Name</Text>
           <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-lg">
             <MaterialIcons name="person" size={20} color="gray" />
             <TextInput
               className="ml-2 flex-1 text-lg"
-              placeholder="Nhập tên của bạn"
+              placeholder="Enter your name"
               autoCapitalize="none"
               value={name}
               onChangeText={setName}
@@ -100,7 +100,7 @@ const SignUpScreen: React.FC = () => {
             <MaterialIcons name="email" size={20} color="gray" />
             <TextInput
               className="ml-2 flex-1 text-lg"
-              placeholder="Nhập email của bạn"
+              placeholder="Enter your email"
               keyboardType="email-address"
               autoCapitalize="none"
               value={email}
@@ -108,12 +108,12 @@ const SignUpScreen: React.FC = () => {
             />
           </View>
 
-          <Text className="mb-2 text-lg text-gray-700">Mật khẩu</Text>
+          <Text className="mb-2 text-lg text-gray-700">Password</Text>
           <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-lg">
             <MaterialIcons name="lock" size={20} color="gray" />
             <TextInput
               className="ml-2 flex-1 text-lg"
-              placeholder="Nhập mật khẩu"
+              placeholder="Enter your password"
               secureTextEntry={!isPasswordVisible}
               value={password}
               onChangeText={setPassword}
@@ -127,12 +127,12 @@ const SignUpScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
 
-          <Text className="mb-2 text-lg text-gray-700">Xác nhận mật khẩu</Text>
+          <Text className="mb-2 text-lg text-gray-700">Confirm Password</Text>
           <View className="mb-4 flex-row items-center rounded-lg bg-gray-100 p-4 shadow-lg">
             <MaterialIcons name="lock" size={20} color="gray" />
             <TextInput
               className="ml-2 flex-1 text-lg"
-              placeholder="Xác nhận mật khẩu"
+              placeholder="Confirm your password"
               secureTextEntry={!isConfirmPasswordVisible}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
@@ -157,16 +157,16 @@ const SignUpScreen: React.FC = () => {
             {isLoading ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
-              <Text className="text-lg font-bold text-white">Đăng Ký</Text>
+              <Text className="text-lg font-bold text-white">Sign Up</Text>
             )}
           </TouchableOpacity>
 
           <Text className="text-center text-gray-700">
-            Đã có tài khoản?{' '}
+            Already have an account?{' '}
             <Text
               className="font-bold text-[rgb(241,139,47)] underline"
               onPress={() => router.replace('/sign-in')}>
-              Đăng Nhập
+              Sign In
             </Text>
           </Text>
         </View>
