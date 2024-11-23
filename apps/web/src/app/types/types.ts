@@ -108,10 +108,10 @@ export interface Vocabulary {
 }
 
 export interface Grammar {
-  id: number;
+  id: string;
   rule: string;
   description: string; // Explanation of the rule
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   lesson: Lesson;

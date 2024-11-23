@@ -31,7 +31,7 @@ export class GrammarController {
   ) {
     return this.grammarService.createGrammar(createGrammarDto, lessonId);
   }
-  @Put(':lessonId')
+  @Put(':id')
   @UseGuards(JWTGuard)
   @UseGuards(AdminAuthGuard)
   async updateGrammar(
@@ -40,7 +40,7 @@ export class GrammarController {
   ) {
     return this.grammarService.updateGrammar(id, updateGrammarDto);
   }
-  @Delete(':lessonId')
+  @Delete(':id')
   @UseGuards(JWTGuard)
   @UseGuards(AdminAuthGuard)
   async deleteGrammar(@Param('id') id: string) {
