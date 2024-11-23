@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Animated,
 } from 'react-native';
 
 import { useAuth } from '~/context/AuthContext';
@@ -17,7 +18,7 @@ import axiosInstance from '~/helper/axios';
 import { User } from '~/types/type';
 
 const ProfileScreen = () => {
-  const { profile, setProfile } = useAuth();
+  const { profile, setProfile, logout } = useAuth();
   const [userProfile, setUserProfile] = useState<User | null>(profile || null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -106,11 +107,13 @@ const ProfileScreen = () => {
     <ScrollView className="flex-1 bg-gray-50 p-6">
       <View className="items-center">
         <View className="relative mb-6">
-          <Image
-            source={{ uri: selectedImage || userProfile?.picture || '' }}
-            className="h-40 w-40 rounded-full border-4 border-orange-500"
-            resizeMode="cover"
-          />
+          <Animated.View style={{ opacity: loading ? 0.5 : 1 }}>
+            <Image
+              source={{ uri: selectedImage || userProfile?.picture || '' }}
+              className="h-40 w-40 rounded-full border-4 border-orange-500"
+              resizeMode="cover"
+            />
+          </Animated.View>
           <TouchableOpacity
             onPress={pickImage}
             className="absolute bottom-0 right-0 h-10 w-10 items-center justify-center rounded-full bg-orange-500">
@@ -131,7 +134,6 @@ const ProfileScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
       <View className="space-y-6">
         <View>
           <Text className="mb-2 text-lg font-medium text-gray-800">Name</Text>
@@ -140,8 +142,7 @@ const ProfileScreen = () => {
               {
                 borderRadius: 8,
                 borderWidth: 1,
-                borderColor: isEditing ? '#F17F2D' : '#D1D5DB',
-                backgroundColor: '#FFFFFF',
+                borderColor: '#D1D5DB',
                 padding: 12,
                 color: '#374151',
               },
@@ -174,7 +175,68 @@ const ProfileScreen = () => {
             placeholder="Your email"
           />
         </View>
+
+        <View>
+          <Text className="mb-2 text-lg font-medium text-gray-800">Provider ID</Text>
+          <TextInput
+            style={[
+              {
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#D1D5DB',
+                backgroundColor: '#F9FAFB',
+                padding: 12,
+                color: '#9CA3AF',
+              },
+            ]}
+            value={userProfile?.providerId || 'N/A'}
+            editable={false}
+          />
+        </View>
+        <View>
+          <Text className="mb-2 text-lg font-medium text-gray-800">Account Created</Text>
+          <TextInput
+            style={[
+              {
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#D1D5DB',
+                backgroundColor: '#F9FAFB',
+                padding: 12,
+                color: '#9CA3AF',
+              },
+            ]}
+            value={
+              userProfile?.createdAt ? new Date(userProfile.createdAt).toLocaleString() : 'N/A'
+            }
+            editable={false}
+          />
+        </View>
+        <View>
+          <Text className="mb-2 text-lg font-medium text-gray-800">Last Updated</Text>
+          <TextInput
+            style={[
+              {
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#D1D5DB',
+                backgroundColor: '#F9FAFB',
+                padding: 12,
+                color: '#9CA3AF',
+              },
+            ]}
+            value={
+              userProfile?.updatedAt ? new Date(userProfile.updatedAt).toLocaleString() : 'N/A'
+            }
+            editable={false}
+          />
+        </View>
       </View>
+      <TouchableOpacity
+        onPress={logout}
+        className="mt-6 w-full rounded-lg bg-red-500 py-3 shadow-lg hover:opacity-90">
+        <Text className="text-center text-lg font-bold text-white">Logout</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };

@@ -71,6 +71,24 @@ export const setCourseid = async (courseId: string) => {
     console.error('Error setting courseid', error);
   }
 }
+export const setCourseTitleAndDescription = async (courcesTitle: string, description: string) => {
+  try {
+    await AsyncStorage.setItem('courseTitle', courcesTitle);
+    await AsyncStorage.setItem('courseDescription', description);
+  } catch (error) {
+    console.error('Error setting courseid', error);
+  }
+}
+export const getCourseTitleAndDescription = async () => {
+  try {
+    return {
+      courseTitle: await AsyncStorage.getItem('courseTitle'),
+      courseDescription: await AsyncStorage.getItem('courseDescription'),
+    }
+  } catch (error) {
+    console.error('Error setting courseid', error);
+  }
+}
 export const getCourseid = async () => {
   try {
     const courseId = await AsyncStorage.getItem('courseid');
