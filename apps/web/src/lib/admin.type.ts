@@ -1,6 +1,6 @@
 // admin dashboard
 
-import { FiActivity, FiBell, FiBook, FiGrid, FiHeart, FiLayers, FiLink, FiMessageSquare, FiSettings, FiUsers, FiVideo, FiFeather, FiFileText } from "react-icons/fi";
+import {  FiBook, FiGrid, FiLayers, FiSettings, FiUsers, FiVideo, FiFeather, FiFileText, FiTrello } from "react-icons/fi";
 
 type SidebarKey = keyof typeof AdminSidebar;
 
@@ -10,14 +10,15 @@ export const AdminSidebar = {
   Courses: "Courses",
   Lessons: "Lessons",
   Vocabulary: "Vocabulary",
+  Grammar: "Grammar",
   Flashcards: "Flashcards",
-  Notifications: "Notifications",
-  HealthyFactory: "Healthy Factory",
-  Reports: "Reports",
+  // Notifications: "Notifications",
+  // HealthyFactory: "Healthy Factory",
+  Minitest: "Minitest",
   Settings: "Settings",
-  Integrations: "Integrations",
-  UserFeedback: "User Feedback",
-  SystemMonitoring: "System Monitoring",
+  // Integrations: "Integrations",
+  // UserFeedback: "User Feedback",
+  // SystemMonitoring: "System Monitoring",
 } as const;
 export const getIconByKey = (key: SidebarKey) => {
   const icons = {
@@ -26,14 +27,15 @@ export const getIconByKey = (key: SidebarKey) => {
     Courses: FiBook,
     Lessons: FiVideo,
     Vocabulary: FiFeather,
+    Grammar: FiTrello,
     Flashcards: FiLayers,
-    Notifications: FiBell,
-    HealthyFactory: FiHeart,
-    Reports: FiFileText,
+    // Notifications: FiBell,
+    // HealthyFactory: FiHeart,
+    Minitest: FiFileText,
     Settings: FiSettings,
-    Integrations: FiLink,
-    UserFeedback: FiMessageSquare,
-    SystemMonitoring: FiActivity,
+    // Integrations: FiLink,
+    // UserFeedback: FiMessageSquare,
+    // SystemMonitoring: FiActivity,
   };
 
   return icons[key];
