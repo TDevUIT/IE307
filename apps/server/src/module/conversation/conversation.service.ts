@@ -6,84 +6,55 @@ import { ConversationDto } from 'src/dto/conversationDto';
 @Injectable()
 export class ConversationService {
   constructor(private readonly prismaService: PrismaService) {}
+
   async getAllConversations() {
     return await this.prismaService.conversation.findMany();
   }
+
   async getConversationById(conversationId: string, userId: string) {
-    let conversationHistory =
-      await this.prismaService.conversationHistory.findFirst({
+    const conversationHistory =
+      await this.prismaService.conversationHistory.findUnique({
         where: {
-          conversationId: conversationId,
-          userId: userId,
+          conversationId_userId: { conversationId, userId },
         },
       });
 
-    let conversationDetails = null;
+    const conversation = await this.prismaService.conversation.findUnique({
+      where: { id: conversationId },
+    });
+
+    if (!conversation) {
+      throw new Error('Conversation not found');
+    }
 
     if (!conversationHistory) {
-      const conversation = await this.prismaService.conversation.findUnique({
-        where: { id: conversationId },
-      });
-
-      if (!conversation) {
-        throw new Error('Conversation not found');
-      }
-
-      conversationDetails = {
-        scene: conversation.title,
-        target: conversation.target,
-        description: conversation.description,
-        defaultFirstMessage: conversation.defaultFirstMessage,
-        timesToMatchTarget: conversation.timesToMatchTarget,
-        jsonContent: conversation.jsonContent,
-        createdAt: conversation.createdAt,
-        updatedAt: conversation.updatedAt,
-      };
-
-      const defaultFirstMessage: any[] = [];
-      try {
-        const parsedMessage = JSON.parse(conversation.defaultFirstMessage);
-        if (parsedMessage) {
-          defaultFirstMessage.push(parsedMessage);
-        }
-      } catch (error) {
-        console.error('Failed to parse defaultFirstMessage:', error);
-      }
-      console.log(defaultFirstMessage);
-      conversationHistory = await this.prismaService.conversationHistory.create(
-        {
+      const defaultFirstMessage =
+        this.parseJSON(conversation.defaultFirstMessage) || [];
+      const initialContent = [defaultFirstMessage];
+      const newConversationHistory =
+        await this.prismaService.conversationHistory.create({
           data: {
-            conversationId: conversationId,
-            userId: userId,
-            jsonContentTotals: JSON.stringify(defaultFirstMessage),
+            conversationId,
+            userId,
+            jsonContentTotals: JSON.stringify(initialContent),
             isCompleted: false,
           },
-        },
-      );
-    } else {
-      const conversation = await this.prismaService.conversation.findUnique({
-        where: { id: conversationId },
-      });
+        });
 
-      if (!conversation) {
-        throw new Error('Conversation not found');
-      }
-
-      conversationDetails = {
-        scene: conversation.title,
-        target: conversation.target,
-        description: conversation.description,
+      return {
+        conversationDetails: this.mapConversationDetails(conversation),
+        conversationHistory: newConversationHistory,
       };
     }
 
     return {
-      conversationDetails,
+      conversationDetails: this.mapConversationDetails(conversation),
       conversationHistory,
     };
   }
 
   async createAnswer(conversation: ConversationDto, dialogueFlow: any[]) {
-    const InputPromptTemplate = process.env.PROMPT_INPUT;
+    const InputPromptTemplate = process.env.PROMPT_INPUT || '';
     const InputPrompt = InputPromptTemplate.replace(
       '{{scene}}',
       conversation.scene,
@@ -91,12 +62,13 @@ export class ConversationService {
       .replace('{{description}}', conversation.description)
       .replace('{{target}}', conversation.target)
       .replace('{{dialogue_flow}}', JSON.stringify(dialogueFlow));
+
     try {
       const responseData = await chatSession.sendMessage(InputPrompt);
-      const jsonResponseData = responseData.response.text();
+      const jsonResponseData = await responseData.response.text();
       const updateDialogueFlow = JSON.parse(jsonResponseData);
       const newDialogueFlow = [...dialogueFlow, updateDialogueFlow];
-      console.log('New Dialogue Flow: ', newDialogueFlow);
+
       return {
         newDialogueFlow,
         jsonResponseData,
@@ -114,20 +86,21 @@ export class ConversationService {
   ) {
     try {
       const conversationHistory =
-        await this.prismaService.conversationHistory.findFirst({
+        await this.prismaService.conversationHistory.findUnique({
           where: {
-            conversationId,
-            userId,
+            conversationId_userId: { conversationId, userId },
           },
         });
+
+      if (!conversationHistory) {
+        throw new Error('Conversation history not found');
+      }
+
       await this.prismaService.conversationHistory.update({
-        where: {
-          id: conversationHistory.id,
-        },
-        data: {
-          jsonContentTotals: jsonResponse,
-        },
+        where: { id: conversationHistory.id },
+        data: { jsonContentTotals: jsonResponse },
       });
+
       console.log('Conversation history updated successfully');
     } catch (error) {
       console.error('Error saving conversation history:', error);
@@ -140,7 +113,7 @@ export class ConversationService {
     defaultFirstMessage: any,
   ) {
     try {
-      const conversationData = await this.prismaService.conversation.create({
+      return await this.prismaService.conversation.create({
         data: {
           title: conversation.scene,
           defaultFirstMessage: JSON.stringify(defaultFirstMessage),
@@ -148,10 +121,32 @@ export class ConversationService {
           description: conversation.description,
         },
       });
-      return conversationData;
     } catch (error) {
       console.error('Error creating conversation:', error);
       throw new Error('Failed to create conversation');
+    }
+  }
+
+  private mapConversationDetails(conversation: any) {
+    return {
+      id: conversation.id,
+      scene: conversation.title,
+      target: conversation.target,
+      description: conversation.description,
+      defaultFirstMessage: conversation.defaultFirstMessage,
+      timesToMatchTarget: conversation.timesToMatchTarget,
+      jsonContent: conversation.jsonContent,
+      createdAt: conversation.createdAt,
+      updatedAt: conversation.updatedAt,
+    };
+  }
+
+  private parseJSON(jsonString: string) {
+    try {
+      return JSON.parse(jsonString);
+    } catch (error) {
+      console.error('Failed to parse JSON:', error);
+      return null;
     }
   }
 }
