@@ -81,11 +81,11 @@ export interface Lesson {
 }
 
 export interface FlashCard {
-  id: number;
+  id: string;
   term: string; // Japanese term
   definition: string; // Vietnamese meaning
   kanji: string; // Kanji characters
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   
