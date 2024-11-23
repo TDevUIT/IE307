@@ -81,11 +81,11 @@ export interface Lesson {
 }
 
 export interface FlashCard {
-  id: number;
+  id: string;
   term: string; // Japanese term
   definition: string; // Vietnamese meaning
   kanji: string; // Kanji characters
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   
@@ -108,20 +108,20 @@ export interface Vocabulary {
 }
 
 export interface Grammar {
-  id: number;
+  id: string;
   rule: string;
   description: string; // Explanation of the rule
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   lesson: Lesson;
 }
 
 export interface MiniTest {
-  id: number;
+  id: string;
   question: string; // Test question
   answer: string; // Correct answer
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   
