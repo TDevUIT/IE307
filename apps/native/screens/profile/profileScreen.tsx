@@ -48,49 +48,39 @@ const ProfileScreen = () => {
       setSelectedImage(pickerResult.assets[0].uri);
     }
   };
-
-  const uploadPicture = async () => {
-    if (!selectedImage || !userProfile) return;
-
+  const handleUpdateProfile = async () => {
     try {
-      const response = await fetch(selectedImage);
-      const blob = await response.blob();
+      setLoading(true);
 
       const formData = new FormData();
-      formData.append('file', blob, 'picture.jpg');
 
-      const responseData = await axiosInstance.post(`/user/${userProfile.id}/picture`, formData, {
+      if (selectedImage) {
+        const response = await fetch(selectedImage);
+        const blob = await response.blob();
+        const fileType = blob.type.split('/')[1] || 'jpeg';
+        formData.append('file', blob, `profile.${fileType}`);
+        console.log(blob);
+      }
+
+      if (userProfile?.name) {
+        formData.append('name', userProfile.name);
+      }
+
+      const response = await axiosInstance.post(`user/update-profile`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      const data = responseData.data as { secure_url: string };
-      Alert.alert('Picture updated successfully!');
-
-      setUserProfile((prevProfile: User | null) => {
-        if (!prevProfile) return prevProfile;
-        return {
-          ...prevProfile,
-          picture: data.secure_url,
-        };
-      });
-      setSelectedImage(null);
-    } catch (error) {
-      const errorMessage = (error as Error).message;
-      Alert.alert('Failed to upload picture:', errorMessage);
-    }
-  };
-
-  const handleUpdateProfile = async () => {
-    if (!userProfile) return;
-
-    try {
-      await axiosInstance.put(`/user/${userProfile.id}/profile`, userProfile);
-      Alert.alert('Profile updated successfully!');
+      setProfile(response.data);
       setIsEditing(false);
-    } catch (error) {
-      Alert.alert('Failed to update profile');
+      Alert.alert('Profile updated successfully');
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || error.message || 'An unexpected error occurred';
+      Alert.alert('Failed to update profile', errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 

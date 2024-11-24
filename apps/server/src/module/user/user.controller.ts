@@ -1,14 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ResponseMessage } from 'src/decorator/response-message.decorator';
 import { Request as ExpressRequest } from 'express';
 import { AuthGuard as JWTGuard } from '../../guard/google.guard';
 import { Notification, User, VocabularyStatus } from '@prisma/client';
 import { AdminAuthGuard } from '../../guard/admin.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateUserDto } from 'src/dto/userDto';
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+  ) {}
 
   @UseGuards(JWTGuard)
   @Get('notifications')
@@ -16,9 +19,28 @@ export class UserController {
   async getNotifications(@Req() req: ExpressRequest): Promise<Notification[]> {
     const userId = req['user'].id;
     if (!userId) {
+
       throw new Error('User ID not found');
     }
     return this.userService.getNotificationsByUserId(userId);
+  }
+  @UseGuards(JWTGuard)
+  @Post('update-profile')
+  @UseInterceptors(FileInterceptor('file'))
+  async updateUserProfile(
+    @Body() updateProfile: UpdateUserDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: Request,
+  ) {
+    console.log('Received profile data:', updateProfile);
+    console.log('Received file:', file);
+    const userId = req['user']?.id;
+    if (!userId) {
+      throw new Error('User not found');
+    }
+
+    const updatedProfile = await this.userService.updateProfile(updateProfile, userId, file);
+    return updatedProfile;
   }
 
   @UseGuards(JWTGuard)
