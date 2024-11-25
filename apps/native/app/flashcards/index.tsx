@@ -45,7 +45,7 @@ const Flashcards = () => {
               kanji={parsedData[currentFlashcardIndex].kanji}
             />
           </View>
-          <View className="mt-6 flex-row space-x-4">
+          <View className="mt-6 flex-row space-x-16">
             <TouchableOpacity
               onPress={goToPreviousFlashcard}
               className="rounded-full bg-blue-500 px-4 py-2 shadow-lg">
