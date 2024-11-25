@@ -5,7 +5,6 @@ import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'rea
 
 import axiosInstance from '~/helper/axios';
 import { FlashCard, Grammar, MiniTest, Vocabulary } from '~/types/type';
-
 const exampleLessonDetails = {
   flashCards: [
     {
