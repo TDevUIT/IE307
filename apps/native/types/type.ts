@@ -86,6 +86,7 @@ export interface FlashCard {
   lessonId: number;
   createdAt: Date;
   updatedAt: Date;
+  originalIndex?: number;
 }
 
 export interface Vocabulary {

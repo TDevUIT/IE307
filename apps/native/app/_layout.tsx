@@ -55,7 +55,7 @@ export default function RootLayout() {
                     transparent
                     visible={isModalVisible}
                     onRequestClose={toggleModal}>
-                    <View className="inset-0 flex-1 items-center justify-center bg-white/70 backdrop-blur-md">
+                    <View className="inset-0 flex-1 items-center justify-center">
                       <View className="w-3/4 rounded-xl bg-white bg-opacity-70 p-5 shadow-lg backdrop-blur-md">
                         <Text className="mb-3 text-lg font-bold text-orange-500">Guide</Text>
                         <Text className="mb-2 text-base text-gray-800">Detailed Information:</Text>
