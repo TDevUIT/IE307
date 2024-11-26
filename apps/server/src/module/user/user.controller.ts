@@ -62,4 +62,11 @@ export class UserController {
   async getAllUsers(): Promise<User[]> {
     return this.userService.getALLUsers();
   }
+  @Post('update-rule')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
+  @ResponseMessage('Update user rule')
+  async updateUserRule(@Body() body: { userId: string; is_admin: boolean }): Promise<User> {
+    return this.userService.updaterule(body.userId, body.is_admin);
+  }
 }
