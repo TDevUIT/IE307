@@ -19,6 +19,13 @@ export class UserService {
       orderBy: { createdAt: 'desc' },
     });
   }
+
+  async updaterule(userId: string, is_admin: boolean) {
+    return await this.prismaService.user.update({
+      where: { id: userId },
+      data: { is_admin },
+    });
+  }
   async updateProfile(updateProfile: UpdateUserDto, userId: string, file?: Express.Multer.File) {
     const foundUser = await this.prismaService.user.findUnique({
       where: { id: userId },
