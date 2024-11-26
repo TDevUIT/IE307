@@ -3,7 +3,7 @@ import { SERVER_URL } from '~/config/env';
 import { getAccessToken, getRefreshToken, storeTokens } from '~/utils/store';
 
 const axiosInstance = axios.create({
-  baseURL: SERVER_URL || 'http://192.168.1.8:3001/api/v1',
+  baseURL: SERVER_URL || 'http://192.168.1.4:3001/api/v1',
   timeout: 10000,
   withCredentials: true, 
   headers: {

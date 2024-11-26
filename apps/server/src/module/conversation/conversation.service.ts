@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { chatSession } from 'src/utils/gemini';
 import { ConversationDto } from 'src/dto/conversationDto';
+import { checkResponseTypeData } from 'src/utils/check.type';
 
 @Injectable()
 export class ConversationService {
@@ -52,7 +53,6 @@ export class ConversationService {
       conversationHistory,
     };
   }
-
   async createAnswer(conversation: ConversationDto, dialogueFlow: any[]) {
     const InputPromptTemplate = process.env.PROMPT_INPUT || '';
     const InputPrompt = InputPromptTemplate.replace(
@@ -63,19 +63,44 @@ export class ConversationService {
       .replace('{{target}}', conversation.target)
       .replace('{{dialogue_flow}}', JSON.stringify(dialogueFlow));
 
-    try {
-      const responseData = await chatSession.sendMessage(InputPrompt);
-      const jsonResponseData = await responseData.response.text();
-      const updateDialogueFlow = JSON.parse(jsonResponseData);
-      const newDialogueFlow = [...dialogueFlow, updateDialogueFlow];
+    const maxRetries = 5;
+    let retryCount = 0;
 
-      return {
-        newDialogueFlow,
-        jsonResponseData,
-      };
-    } catch (error) {
-      console.error('Error while sending message:', error);
-      throw new Error('Failed to send message');
+    while (retryCount < maxRetries) {
+      try {
+        const responseData = await chatSession.sendMessage(InputPrompt);
+        const jsonResponseData = await responseData.response.text();
+
+        const isValidResponseData =
+          await checkResponseTypeData(jsonResponseData);
+
+        if (!isValidResponseData) {
+          retryCount++;
+          console.warn(
+            `Invalid response data, retrying ${retryCount}/${maxRetries}...`,
+          );
+          if (retryCount === maxRetries) {
+            throw new Error(
+              `Failed to validate response data after ${maxRetries} retries.`,
+            );
+          }
+          continue;
+        }
+        const updateDialogueFlow = JSON.parse(jsonResponseData);
+        const newDialogueFlow = [...dialogueFlow, updateDialogueFlow];
+
+        return {
+          newDialogueFlow,
+          jsonResponseData,
+        };
+      } catch (error) {
+        console.error('Error while sending message:', error);
+        retryCount++;
+
+        if (retryCount === maxRetries) {
+          throw new Error('Failed to send message after multiple retries.');
+        }
+      }
     }
   }
 

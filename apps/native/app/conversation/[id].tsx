@@ -231,7 +231,7 @@ const ConversationDetails = () => {
         )}
       </ScrollView>
 
-      {isSendButtonDisabled ? (
+      {currentIndexAnswers === LIMITED_ANSWER ? (
         <View className="mt-4 flex-row items-center justify-center">
           <TouchableOpacity
             onPress={() => alert('Feedback Button Pressed')}
