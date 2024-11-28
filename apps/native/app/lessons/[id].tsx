@@ -208,12 +208,27 @@ export default function LessonDetailsScreen() {
     });
   };
 
+  const handleCulturalInsightsRouter = () => {
+    router.push({
+      pathname: '/culturalInsights',
+      params: { title: 'Cultural Insights'},
+    });
+  };
+  
+const handleListeningRouter = () => {
+    router.push({
+      pathname: '/listening',
+      params: { title: 'Listening Practice'},
+    });
+};
+
   const handleMiniTestsRouter = () => {
     router.push({
       pathname: '/miniTests',
       params: { title: 'Mini Tests', data: JSON.stringify(MiniTests) },
     });
   };
+
 
   const sections = [
     {
@@ -250,13 +265,13 @@ export default function LessonDetailsScreen() {
       title: 'Listening Practice',
       dataCount: 10,
       icon: 'headphones' as const,
-      onPress: () => {},
+      onPress: handleListeningRouter,
     },
     {
       title: 'Cultural Insights',
-      dataCount: 5,
+      dataCount: 6,
       icon: 'public' as const,
-      onPress: () => {},
+      onPress: handleCulturalInsightsRouter,
     },
   ];
 
