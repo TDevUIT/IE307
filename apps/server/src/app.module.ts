@@ -14,6 +14,8 @@ import { GrammarModule } from './module/grammar/grammar.module';
 import { MinitestModule } from './module/minitest/minitest.module';
 import { FlashcardModule } from './module/flashcard/flashcard.module';
 import { ConversationModule } from './module/conversation/conversation.module';
+import { ListeningModule } from './module/listening/listening.module';
+import { InsightModule } from './module/insight/insight.module';
 @Module({
   imports: [
     PrismaModule,
@@ -33,6 +35,8 @@ import { ConversationModule } from './module/conversation/conversation.module';
     MinitestModule,
     FlashcardModule,
     ConversationModule,
+    ListeningModule,
+    InsightModule,
   ],
   controllers: [],
   providers: [],

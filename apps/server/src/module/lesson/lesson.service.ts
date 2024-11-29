@@ -9,7 +9,7 @@ export class LessonService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createLesson(createLessonDto: CreateLessonDto) {
-    const { title, content, courseId, vocabularies, grammars, miniTests } =
+    const { title, content, courseId, vocabularies, grammars, miniTests, insights, listenings } =
       createLessonDto;
 
     const flashCards =
@@ -36,6 +36,12 @@ export class LessonService {
         miniTests: {
           create: miniTests || [],
         },
+        insights: {
+          create: insights || [],
+        },
+        listenings: {
+          create: listenings || [],
+        },
       },
     });
 
@@ -49,6 +55,8 @@ export class LessonService {
         grammars: true,
         vocabularies: true,
         miniTests: true,
+        insights: true,
+        listenings: true,
       },
     });
   }
@@ -61,6 +69,8 @@ export class LessonService {
         grammars: true,
         vocabularies: true,
         miniTests: true,
+        insights: true,
+        listenings: true,
       },
     });
   }
