@@ -5,7 +5,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Button, ActivityIndicator } from 'react-native';
 
 import axiosInstance from '~/helper/axios';
-import { FlashCard, Grammar, MiniTest, Vocabulary, Listening, Insights } from '~/types/type';
+import { FlashCard, Grammar, MiniTest, Vocabulary, Listenings, Insights } from '~/types/type';
 const exampleLessonDetails = {
   flashCards: [
     {
@@ -135,7 +135,7 @@ const exampleLessonDetails = {
       updatedAt: new Date(),
     },
   ],
-  listening: [
+  listenings: [
     {
       id: '1',
       lessonId: '1',
@@ -197,7 +197,6 @@ const exampleLessonDetails = {
       updatedAt: new Date(),
     },
   ],
-  content: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732709415/vlwiqacyf4r5cbemrbyh.mp4',
   insights: [
     {
       id: '1',
@@ -266,6 +265,7 @@ const exampleLessonDetails = {
       updatedAt: new Date(),
     },
   ],
+  content: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732709415/vlwiqacyf4r5cbemrbyh.mp4',
 };
 
 export default function LessonDetailsScreen() {
@@ -316,13 +316,13 @@ export default function LessonDetailsScreen() {
     );
   }
 
-  const { flashCards, grammars, vocabularies, miniTests, listening, insights, content } =
+  const { flashCards, grammars, vocabularies, miniTests, listenings, insights, content } =
     lessonDetails;
   const FlashCards: FlashCard[] = flashCards;
   const Grammars: Grammar[] = grammars;
   const Vocabularies: Vocabulary[] = vocabularies;
   const MiniTests: MiniTest[] = miniTests;
-  const Listening: Listening[] = listening;
+  const Listenings: Listenings[] = listenings;
   const Insights: Insights[] = insights;
   const handleFlashcardsRouter = () => {
     router.push({
@@ -353,9 +353,10 @@ export default function LessonDetailsScreen() {
   };
 
   const handleListeningRouter = () => {
+    //console.log('Listening:', Listening);
     router.push({
       pathname: '/listening',
-      params: { title: 'Listening Practice', data: JSON.stringify(Listening) },
+      params: { title: 'Listening Practice', data: JSON.stringify(Listenings) },
     });
   };
 

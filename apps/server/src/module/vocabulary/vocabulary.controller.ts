@@ -78,6 +78,8 @@ export class VocabularyController {
     return this.vocabularyService.deleteVocabularyStatus(vocabularyId);
   }
   @Post('bulk/:lessonId')
+  @UseGuards(JWTGuard)
+  @UseGuards(AdminAuthGuard)
 async createBulkVocabulary(
   @Body() vocabularies: CreateVocabularyDto[],
   @Param('lessonId') lessonId: string,
