@@ -48,7 +48,7 @@ export interface User {
 }
 
 export interface Course {
-  id: number;
+  id: string;
   title: string;
   description: string;
   createdById: string;
@@ -62,10 +62,10 @@ export interface Course {
 }
 
 export interface Lesson {
-  id: number;
+  id: string;
   title: string;
   content: string;
-  courseId: number;
+  courseId: string;
   createdAt: Date;
   updatedAt: Date;
   
@@ -79,61 +79,81 @@ export interface Lesson {
 }
 
 export interface FlashCard {
-  id: number;
+  id: string;
   term: string;
   definition: string;
   kanji: string;
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   originalIndex?: number;
 }
 
 export interface Vocabulary {
-  id: number;
+  id: string;
   wordJP: string;
   wordVN: string;
   kanji: string;
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface Grammar {
-  id: number;
+  id: string;
   rule: string;
   description: string;
-  lessonId: number;
+  lessonId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Listening {
+  id: string;
+  title: string;
+  description: string;
+  audioUrl: string;
+  thumbnailUrl: string;
+  lessonId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Insights {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface MiniTest {
-  id: number;
+  id: string;
   question: string;
   answer: string;
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface LessonStatus {
-  id: number;
+  id: string;
   status: STATUS;
   progress: number; // Progress percentage
   userId: string;
-  lessonId: number;
+  lessonId: string;
   createdAt: Date;
   updatedAt: Date;
   
 }
 
 export interface CourseStatus {
-  id: number;
+  id: string;
   status: STATUS;
   progress: number; // Progress percentage
   userId: string;
-  courseId: number;
+  courseId: string;
   createdAt: Date;
   updatedAt: Date;
   user: User;
@@ -141,7 +161,7 @@ export interface CourseStatus {
 }
 
 export interface Notification {
-  id: number;
+  id: string;
   type: NOTIFICATION_TYPE;
   message: string;
   sentAt?: Date;
@@ -154,13 +174,13 @@ export interface Notification {
 }
 
 export interface VocabularyStatus {
-  id: number;
+  id: string;
   status: VOCABULARY_STATUS;
   learnedAt: Date;
   nextReviewAt: Date;
   reviewStage: number;
   userId: string;
-  vocabularyId: number;
+  vocabularyId: string;
   createdAt: Date;
   updatedAt: Date;
   user: User;

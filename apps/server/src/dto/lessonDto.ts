@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsString, IsNotEmpty, IsUUID, IsOptional } from 'class-validator';
 
 export class CreateLessonDto {
@@ -30,6 +31,19 @@ export class CreateLessonDto {
   miniTests?: {
     question: string;
     answer: string;
+  }[];
+  @IsOptional()
+  insights?: {
+    title: string;
+    description: string;
+    imageUrl: string;
+  }[];
+  @IsOptional()
+  listenings?: {
+    title: string;
+    description: string;
+    audioUrl: string;
+    thumbnailUrl: string;
   }[];
 }
 
