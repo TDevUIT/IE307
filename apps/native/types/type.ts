@@ -108,7 +108,7 @@ export interface Grammar {
   updatedAt: Date;
 }
 
-export interface Listening {
+export interface Listenings {
   id: string;
   title: string;
   description: string;

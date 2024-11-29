@@ -1,99 +1,56 @@
 import { Audio } from 'expo-av';
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, Button } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, Modal, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Listening } from '~/types/type';
+import { Listenings } from '~/types/type';
 import { convertStringToObject } from '~/utils/convertStringToObject';
 import { useLocalSearchParams } from 'expo-router';
 
-// type Lesson = {
-//   id: string;
-//   title: string;
-//   description: string;
-//   audioUrl: string;
-//   thumbnailUrl: string;
-// };
-
-// const lessons: Lesson[] = [
-//   {
-//     id: '1',
-//     title: '挨拶の基本',
-//     description: '日本語の日常的な挨拶を学びましょう。',
-//     audioUrl: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732790542/huulqigbmtpqjhn2a10g.mp3',
-//     thumbnailUrl: 'https://res.cloudinary.com/dbonwxmgl/image/upload/v1732789168/pbrcqpyxsc14bdcoxifx.png',
-//   },
-//   {
-//     id: '2',
-//     title: 'レストランでの注文',
-//     description: 'レストランでの食事の注文に必要なフレーズを練習しましょう。',
-//     audioUrl: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732790545/xhe4liz2zrzersokhuvk.mp3',
-//     thumbnailUrl: 'https://res.cloudinary.com/dbonwxmgl/image/upload/v1732789168/pbrcqpyxsc14bdcoxifx.png',
-//   },
-//   {
-//     id: '3',
-//     title: '道を尋ねる',
-//     description: '道を尋ねる方法や答えを理解するスキルを学びましょう。',
-//     audioUrl: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732790542/huulqigbmtpqjhn2a10g.mp3',
-//     thumbnailUrl: 'https://res.cloudinary.com/dbonwxmgl/image/upload/v1732789168/pbrcqpyxsc14bdcoxifx.png',
-//   },
-//   {
-//     id: '4',
-//     title: '買い物のフレーズ',
-//     description: '買い物中に使える日本語の表現を学びましょう。',
-//     audioUrl: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732790545/xhe4liz2zrzersokhuvk.mp3',
-//     thumbnailUrl: 'https://res.cloudinary.com/dbonwxmgl/image/upload/v1732789168/pbrcqpyxsc14bdcoxifx.png',
-//   },
-//   {
-//     id: '5',
-//     title: '自己紹介',
-//     description: '初対面の場で自己紹介する方法を練習しましょう。',
-//     audioUrl: 'https://res.cloudinary.com/dbonwxmgl/video/upload/v1732790542/huulqigbmtpqjhn2a10g.mp3',
-//     thumbnailUrl: 'https://res.cloudinary.com/dbonwxmgl/image/upload/v1732789168/pbrcqpyxsc14bdcoxifx.png',
-//   },
-// ];
-
-const LessonCard = ({
-  lesson,
-  onPlayAudio,
-}: {
-  lesson: Listening;
-  onPlayAudio: (audioUrl: string) => void;
-}) => (
-  <TouchableOpacity
-    className="bg-white p-4 mb-4 rounded-lg shadow-lg"
-    onPress={() => onPlayAudio(lesson.audioUrl)}
-  >
+// LessonCard component
+const LessonCard = ({ listening, onPress }: { listening: Listenings; onPress: () => void }) => (
+  <TouchableOpacity className="mb-4 rounded-lg bg-white p-2 shadow-lg" onPress={onPress}>
     <View className="flex-row items-center">
       <Image
-        source={{ uri: lesson.thumbnailUrl }}
-        className="w-16 h-16 rounded-md mr-4"
+        source={{ uri: listening.thumbnailUrl }}
+        className="mr-2 h-16 w-16 rounded-md"
         resizeMode="cover"
       />
-      <View>
-        <Text className="text-lg font-bold text-gray-800">{lesson.title}</Text>
-        <Text className="text-gray-600">{lesson.description}</Text>
+      <View className="w-full">
+        <Text className="flex-wrap text-sm font-bold text-gray-800">{listening.title}</Text>
+        <Text className="flex-wrap text-gray-600">{listening.description}</Text>
       </View>
     </View>
   </TouchableOpacity>
 );
 
 const ListeningPractice = () => {
+  const { data } = useLocalSearchParams();
+  const parsedData = convertStringToObject(data as string) as Listenings[];
+
   const [currentAudio, setCurrentAudio] = useState<string | null>(null);
   const [audioPlayer, setAudioPlayer] = useState<Audio.Sound | null>(null);
-  const { data } = useLocalSearchParams();
-  const parsedData = convertStringToObject(data as string) as Listening[];
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState<Listenings | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const handlePlayAudio = async (audioUrl: string) => {
+  const handlePlayPauseAudio = async (audioUrl: string) => {
     try {
       if (audioPlayer) {
-        await audioPlayer.unloadAsync();
+        if (isPlaying) {
+          await audioPlayer.pauseAsync();
+          setIsPlaying(false);
+        } else {
+          await audioPlayer.playAsync();
+          setIsPlaying(true);
+        }
+      } else {
+        const { sound } = await Audio.Sound.createAsync({ uri: audioUrl });
+        setAudioPlayer(sound);
+        setCurrentAudio(audioUrl);
+        await sound.playAsync();
+        setIsPlaying(true);
       }
-
-      const { sound } = await Audio.Sound.createAsync({ uri: audioUrl });
-      setAudioPlayer(sound);
-      setCurrentAudio(audioUrl);
-      await sound.playAsync();
     } catch (error) {
       console.error('音声の再生中にエラーが発生しました:', error);
     }
@@ -105,35 +62,63 @@ const ListeningPractice = () => {
       await audioPlayer.unloadAsync();
       setAudioPlayer(null);
       setCurrentAudio(null);
+      setIsPlaying(false);
     }
   };
 
+  const openModal = (lesson: Listenings) => {
+    setSelectedLesson(lesson);
+    setModalVisible(true);
+    handlePlayPauseAudio(lesson.audioUrl);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    handleStopAudio();
+  };
+
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      <View className="p-2">
-        <Text className="text-4xl font-extrabold text-orange-500 text-center mb-6">
-          聴解練習
-        </Text>
+    <SafeAreaView className="mb-16 flex-1 bg-gray-100">
+      <View className="p-4">
+        <Text className="mb-6 text-center text-4xl font-extrabold text-orange-500">聴解練習</Text>
         <FlatList
           data={parsedData}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <LessonCard lesson={item} onPlayAudio={handlePlayAudio} />
-          )}
+          renderItem={({ item }) => <LessonCard listening={item} onPress={() => openModal(item)} />}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 16 }}
         />
-        {currentAudio && (
-          <View className="p-4 bg-orange-100 rounded-2xl mb-4">
-            <Text className="text-gray-800">{currentAudio}</Text>
-            <TouchableOpacity
-              className="bg-orange-400 p-3 rounded-3xl"
-              onPress={handleStopAudio}
-            >
-             <Text className="text-gray-100 text-center">再生中</Text>
-                </TouchableOpacity>
+        <Modal visible={modalVisible} animationType="slide" transparent onRequestClose={closeModal}>
+          <View className="flex-1 items-center justify-center bg-gray-100 bg-opacity-25">
+            <View className="w-80 rounded-lg bg-white p-6">
+              {selectedLesson && (
+                <>
+                  <Text className="text-center text-xl font-bold">{selectedLesson.title}</Text>
+                  <Text className="mt-2 text-center text-gray-600">
+                    {selectedLesson.description}
+                  </Text>
+                  <View className="mt-4">
+                    <Text className="text-gray-800">再生中: {currentAudio}</Text>
+                    <View className="flex flex-row items-center justify-between">
+                      <TouchableOpacity
+                        className={`mt-2 rounded-md p-2 shadow-md ${isPlaying ? 'bg-yellow-500' : 'bg-red-500'}`}
+                        onPress={() => handlePlayPauseAudio(selectedLesson.audioUrl)}>
+                        <Text className="text-center text-white">
+                          {isPlaying ? '一時停止' : '再生'}
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        className="mt-2 rounded-md bg-gray-500 p-2 shadow-md"
+                        onPress={closeModal}>
+                        <Text className="text-center text-white">停止</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </>
+              )}
+            </View>
           </View>
-        )}
+        </Modal>
       </View>
     </SafeAreaView>
   );
