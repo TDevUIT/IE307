@@ -43,6 +43,17 @@ export class UserController {
     return updatedProfile;
   }
 
+  @Post('avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  @UseGuards(JWTGuard)
+  async uploadAvatar(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: ExpressRequest,
+  ) {
+    const userId = req['user'].id;
+    return this.userService.uploadUserAvatar(file, userId);
+  }
+
   @UseGuards(JWTGuard)
   @Get('vocabulary-statuses')
   @ResponseMessage('Get user vocabulary statuses')

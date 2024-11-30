@@ -13,11 +13,45 @@ export class UserService {
 
   ) {}
 
+  
+
   async getNotificationsByUserId(userId: string): Promise<Notification[]> {
     return this.prismaService.notification.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async uploadUserAvatar(
+    file: Express.Multer.File,
+    userId: string,
+  ): Promise<any> {
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: {  id: userId.toString() },
+        select: { picture: true },
+      });
+      if (user && user.picture) {
+        const publicId = this.extractPublicIdFromUrl(user.picture);
+        await this.cloudinaryService.deleteFile(publicId);
+      }
+      const uploadResult = await this.cloudinaryService.uploadFile(file);
+      await this.prismaService.user.update({
+        where: { id: userId.toString() },
+        data: { picture: uploadResult.secure_url },
+      });
+
+      return uploadResult;
+    } catch (error) {
+      throw new Error(`Failed to upload avatar: ${error.message}`);
+    }
+  }
+
+  private extractPublicIdFromUrl(url: string): string {
+    const parts = url.split('/');
+    const fileName = parts[parts.length - 1];
+    const publicId = fileName.split('.')[0];
+    return publicId;
   }
 
   async updaterule(userId: string, is_admin: boolean) {
