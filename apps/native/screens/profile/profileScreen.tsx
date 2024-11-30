@@ -31,9 +31,10 @@ const ProfileScreen = () => {
     }
   }, [profile]);
 
+  // Pick image from gallery
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) {
+    if (permissionResult.granted === false) {
       Alert.alert('Permission to access camera roll is required!');
       return;
     }
@@ -48,6 +49,51 @@ const ProfileScreen = () => {
       setSelectedImage(pickerResult.assets[0].uri);
     }
   };
+
+  // Upload avatar to server
+  const uploadAvatar = async () => {
+    if (!selectedImage || !userProfile) return;
+
+    const formData = new FormData();
+    formData.append('file', {
+      uri: selectedImage,
+      name: 'avatar.jpg',
+      type: 'image/jpeg',
+    } as any);
+
+    try {
+      const response = await axiosInstance.post(`user/avatar`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      Alert.alert('Avatar updated successfully!');
+      const data = response.data as { secure_url: string };
+      setUserProfile({ ...userProfile, picture: data.secure_url });
+      setSelectedImage(null);
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      Alert.alert('Failed to upload avatar:', errorMessage);
+    }
+  };
+
+  // const pickImage = async () => {
+  //   const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //   if (!permissionResult.granted) {
+  //     Alert.alert('Permission to access camera roll is required!');
+  //     return;
+  //   }
+
+  //   const pickerResult = await ImagePicker.launchImageLibraryAsync({
+  //     allowsEditing: true,
+  //     aspect: [4, 4],
+  //     quality: 1,
+  //   });
+
+  //   if (!pickerResult.canceled) {
+  //     setSelectedImage(pickerResult.assets[0].uri);
+  //   }
+  // };
   const handleUpdateProfile = async () => {
     try {
       setLoading(true);
@@ -104,11 +150,28 @@ const ProfileScreen = () => {
               resizeMode="cover"
             />
           </Animated.View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={pickImage}
             className="absolute bottom-0 right-0 h-10 w-10 items-center justify-center rounded-full bg-orange-500">
             <Ionicons name="camera" size={20} color="white" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          {selectedImage ? (
+            <TouchableOpacity
+              onPress={uploadAvatar}
+              className="absolute bottom-0 right-0 h-auto w-20 items-center justify-center rounded-full bg-orange-500">
+              <Text className="rounded-full border-2 border-white bg-orange-500 px-4 py-2 text-center text-white">
+                Upload
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={pickImage}
+              className="absolute bottom-0 right-0 h-10 w-20 items-center justify-center rounded-full bg-orange-500">
+              <Text className="rounded-full border-2 border-white bg-orange-500 px-4 py-2 text-center text-white">
+                Change
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         <Text className="mb-2 text-xl font-bold text-gray-800">
