@@ -1,7 +1,8 @@
+import { useLocalSearchParams } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
-import { useLocalSearchParams } from 'expo-router';
+
 import { MiniTest } from '~/types/type';
 import { convertStringToObject } from '~/utils/convertStringToObject';
 
@@ -23,9 +24,7 @@ const MiniTests = () => {
     const wrongAnswers = parsedData
       .filter((_, index) => index !== currentQuestionIndex)
       .map((item) => item.answer);
-    const randomWrongAnswers = wrongAnswers
-      .sort(() => Math.random() - 0.5) 
-      .slice(0, 3); 
+    const randomWrongAnswers = wrongAnswers.sort(() => Math.random() - 0.5).slice(0, 3);
 
     const allOptions = [...randomWrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
     setOptions(allOptions);
@@ -47,11 +46,11 @@ const MiniTests = () => {
 
   return (
     <ScrollView className="bg-[#f7fafc] p-6">
-      <View className="bg-white p-6 rounded-xl shadow-xl mb-6">
-        <Text className="text-3xl font-bold text-gray-800 mb-3">
+      <View className="mb-6 rounded-xl bg-white p-6 shadow-xl">
+        <Text className="mb-3 text-3xl font-bold text-gray-800">
           Question {currentQuestionIndex + 1} / {parsedData.length}
         </Text>
-        <Text className="text-xl text-gray-700 mb-4">
+        <Text className="mb-4 text-xl text-gray-700">
           {parsedData[currentQuestionIndex].question}
         </Text>
 
@@ -60,9 +59,8 @@ const MiniTests = () => {
             <TouchableOpacity
               key={index}
               onPress={() => handleAnswerSelection(option)}
-              className="bg-orange-500 px-6 py-3 rounded-xl mb-3"
-            >
-              <Text className="text-white font-semibold text-lg">{option}</Text>
+              className="mb-3 rounded-xl bg-orange-500 px-6 py-3">
+              <Text className="text-lg font-semibold text-white">{option}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -77,11 +75,10 @@ const MiniTests = () => {
         useNativeDriver
         backdropColor="rgba(0, 0, 0, 0.5)"
         backdropOpacity={0.5}
-        backdropTransitionOutTiming={0}
-      >
-        <View className="bg-white rounded-xl p-8 shadow-xl max-w-[100%] mx-auto">
-          <Text className="text-3xl font-bold text-green-600 mb-4 text-center">Your Score</Text>
-          <Text className="text-xl text-gray-600 text-center mb-6">
+        backdropTransitionOutTiming={0}>
+        <View className="mx-auto max-w-[100%] rounded-xl bg-white p-8 shadow-xl">
+          <Text className="mb-4 text-center text-3xl font-bold text-green-600">Your Score</Text>
+          <Text className="mb-6 text-center text-xl text-gray-600">
             You scored {score} out of {parsedData.length}.
           </Text>
         </View>

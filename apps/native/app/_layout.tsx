@@ -125,6 +125,39 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
+          name="miniTests/essay"
+          options={({ route }) => {
+            const { title } = route.params as { title: string };
+            return {
+              headerShown: true,
+              title: `${title}`,
+              headerStyle: { backgroundColor: '#f7c6a3' },
+            };
+          }}
+        />
+        <Stack.Screen
+          name="miniTests/multipleChoice"
+          options={({ route }) => {
+            const { title } = route.params as { title: string };
+            return {
+              headerShown: true,
+              title: `${title}`,
+              headerStyle: { backgroundColor: '#f7c6a3' },
+            };
+          }}
+        />
+        <Stack.Screen
+          name="miniTests/answer"
+          options={({ route }) => {
+            const { title } = route.params as { title: string };
+            return {
+              headerShown: true,
+              title: `${title}`,
+              headerStyle: { backgroundColor: '#f7c6a3' },
+            };
+          }}
+        />
+        <Stack.Screen
           name="(routes)/profile"
           options={() => {
             return {
