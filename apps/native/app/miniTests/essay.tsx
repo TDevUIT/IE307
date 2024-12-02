@@ -1,7 +1,8 @@
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Animated, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
-import { useLocalSearchParams } from 'expo-router';
+
 import { MiniTest } from '~/types/type';
 import { convertStringToObject } from '~/utils/convertStringToObject';
 import { images } from '~/utils/icon';
@@ -39,27 +40,26 @@ const MiniTests = () => {
 
   return (
     <ScrollView className="bg-[#f7fafc] p-6">
-      <View className="bg-white p-6 rounded-xl shadow-xl mb-6">
-        <Text className="text-3xl font-bold text-gray-800 mb-3">
+      <View className="mb-6 rounded-xl bg-white p-6 shadow-xl">
+        <Text className="mb-3 text-3xl font-bold text-gray-800">
           Question {currentQuestionIndex + 1} / {parsedData.length}
         </Text>
-        <Text className="text-xl text-gray-700 mb-4">
+        <Text className="mb-4 text-xl text-gray-700">
           {parsedData[currentQuestionIndex].question}
         </Text>
         <TextInput
-          className="mt-4 mb-4 p-3 border-2 border-gray-300 rounded-xl text-lg"
+          className="mb-4 mt-4 rounded-xl border-2 border-gray-300 p-3 text-lg"
           placeholder="Your answer"
           value={userAnswer}
           onChangeText={setUserAnswer}
         />
         <TouchableOpacity
           onPress={handleSubmitAnswer}
-          className="bg-green-500 px-6 py-3 rounded-xl items-center"
-        >
-          <Text className="text-white font-semibold text-lg">Submit Answer</Text>
+          className="items-center rounded-xl bg-green-500 px-6 py-3">
+          <Text className="text-lg font-semibold text-white">Submit Answer</Text>
         </TouchableOpacity>
       </View>
-      <Animated.View className="flex-1 justify-center items-center">
+      <Animated.View className="flex-1 items-center justify-center">
         <Animated.Image source={images.capy} className="h-[350px] w-[250px]" />
       </Animated.View>
 
@@ -71,13 +71,10 @@ const MiniTests = () => {
         animationOut="fadeOut"
         backdropColor="rgba(0, 0, 0, 0.5)"
         backdropOpacity={0.5}
-        useNativeDriver
-      >
-        <View className="bg-white rounded-lg p-6 shadow-lg max-h-1/3 mx-4">
-          <Text className="text-2xl font-bold text-red-500 mb-4">Error</Text>
-          <Text className="text-lg text-gray-700">
-            Please enter an answer before submitting.
-          </Text>
+        useNativeDriver>
+        <View className="max-h-1/3 mx-4 rounded-lg bg-white p-6 shadow-lg">
+          <Text className="mb-4 text-2xl font-bold text-red-500">Error</Text>
+          <Text className="text-lg text-gray-700">Please enter an answer before submitting.</Text>
         </View>
       </Modal>
       <Modal
@@ -89,11 +86,10 @@ const MiniTests = () => {
         useNativeDriver
         backdropColor="rgba(0, 0, 0, 0.5)"
         backdropOpacity={0.5}
-        backdropTransitionOutTiming={0}
-      >
-        <View className="bg-white rounded-xl p-8 shadow-xl max-w-[100%] mx-auto">
-          <Text className="text-3xl font-bold text-green-600 mb-4 text-center">Your Score</Text>
-          <Text className="text-xl text-gray-600 text-center mb-6">
+        backdropTransitionOutTiming={0}>
+        <View className="mx-auto max-w-[100%] rounded-xl bg-white p-8 shadow-xl">
+          <Text className="mb-4 text-center text-3xl font-bold text-green-600">Your Score</Text>
+          <Text className="mb-6 text-center text-xl text-gray-600">
             You scored {score} out of {parsedData.length}.
           </Text>
         </View>
